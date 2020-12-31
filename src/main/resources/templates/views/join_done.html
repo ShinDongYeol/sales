@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
+
+</head>
+<body>
+<div class="modal fade" id="moadlAlert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered modal-sm" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Alert</h4>
+            </div>
+            <div class="modal-body" id="modalContent">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+<script th:src="@{/webjars/jquery-form/4.2.2/jquery.form.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+<script th:inline="javascript">
+
+    var result = /*[[ ${result} ]]*/;
+
+    (function () {
+        event();
+        if(Number(result) == 200) {
+            showAlert('등록되었습니다.');
+        }else {
+            showAlert('등록이 실패하였습니다.');
+        }
+
+    })();
+
+    function event() {
+        $('#moadlAlert').on('hidden.bs.modal', function () {
+            location.href ='/view/login';;
+        })
+    }
+
+    function showAlert(msg) {
+        $('#moadlAlert').modal('show');
+        $('#modalContent').empty();
+        $('#modalContent').append(msg);
+    }
+
+</script>
+</body>
+</html>

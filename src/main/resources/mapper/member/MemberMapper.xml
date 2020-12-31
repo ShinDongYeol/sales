@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sales.main.mapper.member.MemberMapper">
+
+    <select id="teamInfo" resultType="TeamVO">
+            select team_code as teamCode,
+                   dept_code as departCode,
+                   team_name as teamName
+            from sales_teams
+            order by team_code asc
+    </select>
+
+    <select id="searchMember" parameterType="java.util.Map" resultType="int">
+
+        SELECT COUNT(*) cnt
+        FROM sales_employee
+        WHERE emp_id = #{empId}
+    </select>
+
+    <insert id="insertMember" parameterType="MemberVO">
+
+        insert into sales_employee(emp_id, emp_pw, emp_name, emp_phone, team_code, emp_position)
+                 values(#{empId}, #{empPw}, #{empName}, #{phone}, #{team}, #{position})
+    </insert>
+
+</mapper>
