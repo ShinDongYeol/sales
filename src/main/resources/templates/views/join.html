@@ -11,38 +11,23 @@
     <script src="css/reset.css"></script>
 
     <style>
-      * {padding: 0; margin: 0;}
+        * {padding: 0; margin: 0;}
 
         body {
-          background-color: #00aaff;
+            background-color: #00aaff;
         }
 
 
-        input, select {
-          width: 100%;
-          padding: 7px 20px;
-          /* margin: 0px 0; */
-          display: inline-block;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
-        }
-        
+
         button {
-          width: 50%;
-          color: white;
-          padding: 14px 20px;
-          margin: 70px 0;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          float: left;
-        }
-        
-        
-        div {
-          overflow: hidden;
-          border-radius: 5px;
+            width: 50%;
+            color: white;
+            padding: 14px 20px;
+            margin: 70px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: left;
         }
 
         label {
@@ -50,64 +35,98 @@
         }
 
         h2 {
-          margin-top: 50px;
-          color: white;
+            margin-top: 50px;
+            color: white;
         }
 
-        </style>
-
+    </style>
 
 </head>
 <body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 text-center" >
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <h2>회원가입</h2>
+                <form action="MemberJoinProc.jsp" method="post">
+                    <table class="table table-boardered">
+                        <tr>
+                            <th style="padding-top: 15px">
+                               <span><span style="color:red">*</span>사    번</span>
+                            </th>
+                            <td>
+                                <div class="form-group">
+                                <div class="row">
+                                    <div class="col-8 col-md-8 col-sm-8 col-xs-8" style="text-align: right; padding: 0px 0px 0px 15px">
+                                         <input type="text" class="form-control" id="epNum" name="epNum">
+                                    </div>
+                                    <div class="col-4 col-md-4 col-sm-4 col-xs-4" style="text-align: left; padding: 0px 0px 0px 0px">
+                                        <input type="button" class="btn btn-success" onclick="" value="사번조회" />
+                                    </div>
+                                </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="padding-top: 15px"><span style="color:red">*</span>비밀번호</th>
+                            <td>
+                                <input type="password" class="form-control" name="pass1" placeholder="">
+                                <span style="color:#fffdf1;font-size: 5px">비밀번호는 영문,숫자,특수기호 조합으로 만드십시오.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="padding-top: 15px"><span style="color:red">*</span>비밀번호확인</th>
+                            <td><input type="password" class="form-control" name="pass2"></td>
+                        </tr>
+                        <tr>
+                            <th style="padding-top: 15px"><span style="color:red">*</span>이    름</th>
+                            <td><input type="name" class="form-control" name="name" placeholder="이름을 입력하시오."></td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td><input type="tel" class="form-control" name="tel"></td>
+                        </tr>
+                        <tr>
+                            <th><span style="color:red">*</span>부서</th>
+                            <td>
+                                <select name="job" class="form-control">
+                                    <option value="교사">교사</option>
+                                    <option value="변호사">변호사</option>
+                                    <option value="의사">의사</option>
+                                    <option value="기술사">기술사</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><span style="color:red">*</span>팀</th>
+                            <td>
+                                <select name="job" class="form-control">
+                                    <option value="교사">교사</option>
+                                    <option value="변호사">변호사</option>
+                                    <option value="의사">의사</option>
+                                    <option value="기술사">기술사</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="padding-top: 15px"><span style="color:red">*</span>직급</th>
+                            <td>
+                                <input type="text" class="form-control" name="pass1" placeholder="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="submit" class="btn btn-primary" value="전송">
+                                <input type="reset" class="btn btn-danger" value="취소">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
 
-    
-  <div>
-    <h2 style="text-align: center; font-size: x-large;"><strong>사원 등록</strong></h2>
-
-    <form action="home.html" class="col-sm-10 col-ms-8 col-lg-6">
-        <div>
-            <label>* 사번</label>
-            <br/>
-            <input type="text" class="col-xs-9" id="epNum" name="epNum">
-            <input type="button" class="col-xs-3 btn btn-success" onclick="#" value="사번조회" />
         </div>
-
-        <div>
-            <label>* 아이디</label>
-            <br/>
-            <input type="text" class="col-xs-9" id="id" name="id">
-            <input type="button" class="col-xs-3 btn btn-success" onclick="#" value="중복조회" />
-        </div>
-
-        <div>                
-            <label>* 이름</label>
-            <input type="text" id="name" name="name">
-        </div>
-
-        <div>    
-            <label>* 비밀번호</label>
-            <input type="password" id="pw" name="pw">
-        </div>
-
-        <div>    
-            <label>* 비밀번호 확인</label>
-            <input type="password" id="pwCheck" name="pwCheck">
-        </div>
-
-        <div>    
-            <label for="team">*팀</label>
-            <select id="team" name="team">
-                <option value="team1">1</option>
-                <option value="team2">2</option>
-                <option value="team3">3</option>
-            </select>
-        </div>
-
-        <button type="button" class="btn btn-default" onclick="location.href='home.html'">로그인</button>
-        <button type="submit" class="btn btn-primary">등록</button>
-
-    </form>
+    </div>
 </div>
-    
 </body>
 </html>
