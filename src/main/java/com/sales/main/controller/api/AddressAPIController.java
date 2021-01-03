@@ -1,39 +1,45 @@
 package com.sales.main.controller.api;
 
+import com.sales.main.service.ApiService;
 import com.sales.main.utils.HttpUtils;
+import com.sales.main.vo.place.PlaceVO;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/map/api")
 public class AddressAPIController {
 
-    private HttpUtils httpUtils;
+
+    private ApiService service;
 
     @Autowired
-    public void setHttpUtils(HttpUtils httpUtils) {
-        this.httpUtils = httpUtils;
+    public void setApiService(ApiService service) {
+        this.service = service;
     }
 
     @RequestMapping("/addr")
-    public Map<String, Object> test() {
+    public Map<String, Object> test(@RequestParam(value = "type") String type,
+                                    @RequestParam(value = "query") String query) {
 
         Map<String, Object> resultMap = new HashMap<>();
-
-        String api = "KakaoAK 53f4cfea53e9308630e07a7a63e9e368";
+        List<PlaceVO> placeList = null;
         try {
 
-            HttpUtils utils = new HttpUtils();
-            String address = "판교역로 235";
-            String apiURL = "https://dapi.kakao.com/v2/local/search/address.json?query=" + URLEncoder.encode(address, "UTF-8");
-            String result = utils.get(apiURL, null, api);
-
-            System.out.println(result);
+            if(type.equals("place")) {
+                placeList = service.getPlaceInfoByName(query);
+                resultMap.put("list", placeList);
+            }
 
 
         } catch (Exception e) {
