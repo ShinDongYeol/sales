@@ -41,9 +41,12 @@ public class AddressAPIController {
                 resultMap.put("list", placeList);
             }
 
+            resultMap.put("resultCode", 200);
 
         } catch (Exception e) {
             e.printStackTrace();
+            resultMap.put("resultCode", 500);
+
         }
 
         return resultMap;

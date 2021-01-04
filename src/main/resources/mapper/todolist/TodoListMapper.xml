@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sales.main.mapper.todolist.TodoListMapper">
+
+    <insert id="" parameterType="PlaceVO"  >
+        INSERT INTO sales_store(emp_id, store_name, store_addr, lat_x, lng_y, sales_date, reg_date, mod_date)
+                                 VALUES( #{empId}, #{placeName}, #{roadAddr}, #{x}, #{y}, #{targetDate}, now()), null)
+    </insert>
+
+</mapper>

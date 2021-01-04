@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class PlaceVO {
+     private String targetDate;  // 대상일
+     private String empId;
      private String placeUrl;  // 가게 사이트 주소
      private String placeName;  // 장소명
      private String category;  // 카테고리

@@ -45,6 +45,8 @@ public class ApiService {
                 vo.setPlaceUrl(obj.getString("place_url"));
                 vo.setPhone(obj.getString("phone"));
                 vo.setRoadAddr(obj.getString("road_address_name"));
+                vo.setX(obj.getString("x"));
+                vo.setY(obj.getString("y"));
                 list.add(vo);
             }
         }
