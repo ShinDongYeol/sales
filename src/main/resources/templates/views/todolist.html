@@ -141,7 +141,7 @@
                 <tr id="tr1">
                     <td><input type="text" class="form-control" id="store1" name="store"></td>
                     <td>
-                        <input type="text" class="form-control" placeholder="주소" id="addr1" name ="addr">
+                        <input type="text" class="form-control" placeholder="주소" id="addr1" name ="addr" readonly>
                         <input type="hidden" class="form-control" placeholder="주소" id="data1" name ="data">
                     </td>
                     <td>
@@ -153,7 +153,7 @@
                 <tr id="tr2">
                     <td><input type="text" class="form-control" id="store2" name="store"></td>
                     <td>
-                        <input type="text" class="form-control" placeholder="주소" id="addr2" name ="addr">
+                        <input type="text" class="form-control" placeholder="주소" id="addr2" name ="addr" readonly>
                         <input type="hidden" class="form-control" placeholder="주소" id="data2" name ="data">
                     </td>
                     <td>
@@ -197,14 +197,16 @@
                         <input type="hidden" id="nowCnt"  name="nowCnt">
                         <table class="table table-hover modal-table">
                             <tbody id="addrList">
-                            <!--<tr>
+                            <!--
+                            <tr>
                                 <td>
                                     <p>상호명</p>
                                     <p>주소</p>
                                     <p>연락처</p>
                                 </td>
                                 <td><button type="button" class="btn btn-primary right" onclick="selectAddr()">선택</button></td>
-                            </tr>-->
+                            </tr>
+                            -->
                             </tbody>
                         </table>
                     </div>
@@ -238,6 +240,7 @@
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.ko.js}"></script>
     <script>
+
         var count = 2;
 
         function tableAdd() {
@@ -255,8 +258,8 @@
                 var btn = $('<button></button>')
                 tr.attr('id', 'tr'+count);
 
-                td1.append('<input type="text" class="form-control" id="store'+ count +  '" name="store">')
-                td2.append('<input type="text" class="form-control" id="addr'+ count +  '" name="addr">');
+                td1.append('<input type="text" class="form-control" id="store'+ count +  '" name="store" >')
+                td2.append('<input type="text" class="form-control" id="addr'+ count +  '" name="addr" readonly>');
                 td2.append('<input type="hidden" class="form-control" id="data'+ count +  '" name="data">');
 
                 btn.attr('type', 'button');
@@ -278,7 +281,7 @@
         function showModal(count) {
             $('#myModal').modal('show');
 
-
+            //모달창 뜬다음에 내용 초기화
             $('#myModal').on('shown.bs.modal', function () {
                 $('#searchText').val('');
                 $('#addrList').empty();
@@ -321,6 +324,8 @@
                     }
             });
 
+
+
         }
 
         function drawAddr(list) {
@@ -335,8 +340,9 @@
                 var btn = $('<button>'+'선택' +'</button>')
 
                 td1.append('<p>상호명 :' + obj.placeName +'</p>');
-                td1.append('<p>주소 : ' + obj.roadAddr +'</p>');
-                td1.append('<p>주소 : ' + obj.phone +'</p>');
+                td1.append('<p>도로명 주소 : ' + obj.roadAddr +'</p>');
+                td1.append('<p>지번 주소 : ' + obj.addr +'</p>');
+                td1.append('<p>전화번호 : ' + obj.phone +'</p>');
 
                 btn.attr('type', 'button');
                 btn.addClass('btn btn-primary right');
@@ -373,6 +379,7 @@
 
 
 
+        //달력 초기화
         function initDate() {
             //datepicker
             $('#timePicker').datepicker({
@@ -417,10 +424,16 @@
                 dataType: 'json',
             }).done(function (data) {
                 if(data.resultCode == 200)  {
-                    drawAddr(data.list);
+                   showAlert('등록되었습니다.')
+                    location.reload();
+                }else {
+                    showAlert('등록이 실패했습니다.');
+                    return false;
                 }
+            }).fail(function(data, textStatus, errorThrown){
+                console.log("fail in get addr");
+                console.log(data);
             });
-
         }
 
         $(document).ready(function () {

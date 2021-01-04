@@ -3,9 +3,9 @@
 
 <mapper namespace="com.sales.main.mapper.todolist.TodoListMapper">
 
-    <insert id="" parameterType="PlaceVO"  >
+    <insert id="insertTodoList" parameterType="PlaceVO"  >
         INSERT INTO sales_store(emp_id, store_name, store_addr, lat_x, lng_y, sales_date, reg_date, mod_date)
-                                 VALUES( #{empId}, #{placeName}, #{roadAddr}, #{x}, #{y}, #{targetDate}, now()), null)
+                                 VALUES( #{empId}, #{placeName}, #{roadAddr}, #{x}, #{y}, #{targetDate}, now(), null)
     </insert>
 
 </mapper>

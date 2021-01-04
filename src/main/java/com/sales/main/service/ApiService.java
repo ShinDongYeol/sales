@@ -32,6 +32,8 @@ public class ApiService {
         String apiURL = "https://dapi.kakao.com/v2/local/search/keyword.json?query=" + URLEncoder.encode(address, "UTF-8");
         String result = httpUtils.get(apiURL, null, api);
 
+        System.out.println(result);
+
         List<PlaceVO> list = new ArrayList<>();
         if(result !=null) {
             JSONArray arr = new JSONObject(result).getJSONArray("documents");

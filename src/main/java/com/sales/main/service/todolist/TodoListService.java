@@ -1,11 +1,16 @@
 package com.sales.main.service.todolist;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sales.main.mapper.todolist.TodoListMapper;
 import com.sales.main.vo.place.PlaceVO;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +18,15 @@ import java.util.List;
 public class TodoListService {
 
 
+    private TodoListMapper mapper;
 
+    @Autowired
+    public TodoListService(TodoListMapper mapper) {
+        this.mapper = mapper;
+    }
+
+
+    @Transactional
     public int insertTodoList(String nowDate, String dataList)  throws  Exception {
 
         JSONArray arr= new JSONArray(dataList);
@@ -26,10 +39,18 @@ public class TodoListService {
             list.add(vo);
         }
 
+        int result = 0;
         for(PlaceVO vo  : list )  {
+            vo.setTargetDate(nowDate);
+            vo.setEmpId("1ddekdkdke");
 
+            result = mapper.insertTodoList(vo);
+
+            if(result < 0) {
+                throw new Exception("insert Error");
+            }
         }
 
-        return 1;
+        return result;
     }
 }
