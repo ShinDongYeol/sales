@@ -1,22 +1,19 @@
 package com.sales.main.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sales.main.service.todolist.TodoListService;
-import com.sales.main.utils.DateUtils;
-import com.sales.main.vo.place.PlaceVO;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.sales.main.service.todolist.TodoListService;
+import com.sales.main.utils.DateUtils;
 
 @Controller
 public class TodoListController {
