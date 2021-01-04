@@ -111,7 +111,7 @@
                         <tr>
                             <td colspan="2">
                                 <input type="button" class="btn btn-primary" onclick="joinUser();" value="전송">
-                                <input type="reset" class="btn btn-danger" value="취소">
+                                <input type="reset" class="btn btn-danger" onclick="cancel();" value="취소">
                             </td>
                         </tr>
                     </table>
@@ -176,6 +176,10 @@
             $('#joinFrm').submit();
         }
 
+    }
+
+    function cancel(){
+        location.href ='/view/login';
     }
 
     function validPw() {
