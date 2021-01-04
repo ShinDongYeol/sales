@@ -424,10 +424,10 @@
                 dataType: 'json',
             }).done(function (data) {
                 if(data.resultCode == 200)  {
-                   showAlert('등록되었습니다.')
+                   alert('등록되었습니다.')
                     location.reload();
                 }else {
-                    showAlert('등록이 실패했습니다.');
+                    alert('등록이 실패했습니다.');
                     return false;
                 }
             }).fail(function(data, textStatus, errorThrown){
