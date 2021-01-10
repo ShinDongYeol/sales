@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SalesMap</title>
 
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.2/css/bootstrap.min.css}">
 
@@ -11,9 +11,9 @@
         * {padding: 0; margin: 0;}
 
         body {
-            background-color: #00aaff;
+            background-color: #f2f2f2;
         }
-        
+
         button {
             width: 50%;
             color: white;
@@ -31,7 +31,6 @@
 
         h2 {
             margin-top: 50px;
-            color: white;
         }
 
 
@@ -49,18 +48,18 @@
                     <table class="table table-boardered">
                         <tr>
                             <th style="padding-top: 15px">
-                               <span><span style="color:red">*</span>사    번</span>
+                                <span><span style="color:red">*</span>사    번</span>
                             </th>
                             <td>
                                 <div class="form-group">
-                                <div class="row">
-                                    <div class="col-8 col-md-8 col-sm-8 col-xs-8" style="text-align: right; padding: 0px 0px 0px 15px">
-                                         <input type="text" class="form-control" id="empId" name="empId">
+                                    <div class="row">
+                                        <div class="col-8 col-md-8 col-sm-8 col-xs-8" style="text-align: right; padding: 0px 0px 0px 15px">
+                                            <input type="text" class="form-control" id="empId" name="empId">
+                                        </div>
+                                        <div class="col-4 col-md-4 col-sm-4 col-xs-4" style="text-align: left; padding: 0px 0px 0px 0px">
+                                            <input type="button" class="btn btn-success" onclick="searchEmpId();" value="사번조회" />
+                                        </div>
                                     </div>
-                                    <div class="col-4 col-md-4 col-sm-4 col-xs-4" style="text-align: left; padding: 0px 0px 0px 0px">
-                                        <input type="button" class="btn btn-success" onclick="searchEmpId();" value="사번조회" />
-                                    </div>
-                                </div>
                                 </div>
                             </td>
                         </tr>
@@ -165,7 +164,7 @@
             console.log(textStatus);
         });
     }
-    
+
     function joinUser() {
 
         if(duplicatedId) {

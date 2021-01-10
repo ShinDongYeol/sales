@@ -42,7 +42,7 @@ public class TodoListService {
         int result = 0;
         for(PlaceVO vo  : list )  {
             vo.setTargetDate(nowDate);
-            vo.setEmpId("1ddekdkdke");
+            vo.setEmpId("aa");
 
             result = mapper.insertTodoList(vo);
 

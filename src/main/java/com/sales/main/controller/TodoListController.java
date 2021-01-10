@@ -64,7 +64,5 @@ public class TodoListController {
         }
 
         return resultMap;
-
-
     }
 }

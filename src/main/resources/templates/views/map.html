@@ -4,55 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map2</title>
+    <title>SalesMap</title>
 
-    
+
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="css/reset.css"></script>
-
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    
     <style>
-        /* .dropbtn {
-            background-color: #22bbee;
-            color: white;
-            padding: 16px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .dropdown-content a:hover {background-color: #f1f1f1;}
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .dropdown:hover .dropbtn {
-            background-color: #5ca4c9;
-        } */
+        * {font-family: 'Nanum Gothic', sans-serif;}
 
         .navbar {
             background-color: #00aaff;
@@ -69,32 +32,53 @@
             color: white;
         }
 
-        .glyphicon {
-            width: 50px;
-        }
 
         table {
             width: 100%;
-            text-align: center;
         }
 
         table
         , td
         , th {
-            border: 1px solid #777777;
+            padding: 3px;
+            text-align: center;
+            font-size: small;
+        }
+
+        .navbar-nav :hover {
+            background-color: black;
         }
 
         .main {
-            padding: 10px 0;
+            /* margin: 10px; */
         }
 
-        .search {
-            padding: 10px 0;
+        .detail {
+            overflow: hidden;
+            background-color: rgba(185, 183, 183, 0.467);
+            border-radius: 5px;
+            padding: 10px 5px;
+            line-height: 0.5em;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .right {
+            float: right;
+            padding-bottom: 7px; 
         }
 
         section {
             padding: 20px;
         }
+
+        .date {
+            padding: 10px 0;
+        }
+
+      
     </style>
 
 
@@ -125,137 +109,179 @@
         </div>
     </nav>
 
-
     <section>
-
-        <div>
-            <span>지역을 선택하세요</span>
-            <select id="city" name="city">
-                <option value="city1">city1</option>
-                <option value="city2">city2</option>
-                <option value="city3">city3</option>
-                <option value="city4">city4</option>
-                <option value="city5">city5</option>
-                <option value="city6">city6</option>
-                <option value="city7">city7</option>
-            </select>
-            <select id="gu" name="gu">
-                <option value="gu1">gu1</option>
-                <option value="gu2">gu2</option>
-                <option value="gu3">gu3</option>
-                <option value="gu4">gu4</option>
-                <option value="gu5">gu5</option>
-                <option value="gu6">gu6</option>
-                <option value="gu7">gu7</option>
-            </select>
-            <button type="submit">조회</button>
-        </div>
-
-
-
         <div class="main">
-            <div id="map" style="width:100%;height:500px; "></div>
+            <div id="map" style="width:100%;height:600px; "></div>
             <div id="clickLatlng"></div>
-        </div>
+        </div>       
+    </section>
 
 
-        <div class="search">
-            <input type="text" placeholder="매장명 또는 주소">
-            <button type="submit">조회</button>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <td>store</td>
-                    <td>address</td>
-                    <td>salesEmployee</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a onclick="prompt('storeID : ')">store1</a></td>
-                    <td>서울시 송파구 잠실1</td>
-                    <td>se1</td>
-                </tr>
-                <tr>
-                    <td><a>store2</a></td>
-                    <td>서울시 송파구 송파1</td>
-                    <td>se2</td>
-                </tr>
-                <tr>
-                    <td><a>store3</a></td>
-                    <td>서울시 송파구 문정1</td>
-                    <td>se3</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- <div>
-            <p style="margin-top:-12px">
-                <em class="link">
-                    <a href="/web/documentation/#CategoryCode" target="_blank">카테고리 코드목록을 보시려면 여기를 클릭하세요!</a>
-                </em>
-            </p>
-            <div id="map" style="width:100%;height:350px;"></div>
-        </div> -->
-    
-    
-    </section> 
-
-
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ce14a541f6d3fd02060f8fa9c4750b5&libraries=services"></script>
+    <script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ee3b34b417b65bc0b7697bb57a7714ed"></script>
     <script>
-        // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
-        var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+        // 마커를 표시할 위치와 title 객체 배열입니다 
+        const myLatLng = { lat: "", lng: "" };
+        var positions = new Array();
+        // 주소-좌표 변환 객체를 생성합니다
+        // var geocoder = new kakao.maps.services.Geocoder();
+
+
+        //  // 위치 정보 성공 함수
+        function coordSuccess(position) {    //첫번째 매개변수의 사용자의 위치 정보
+            myLatLng.lat = position.coords.latitude;
+            myLatLng.lng = position.coords.longitude;
+            console.log(myLatLng.lat, myLatLng.lng)
+        }
+
+        function coordFail(position) {    //첫번째 매개변수의 사용자의 위치 정보
+
+        }
+
+        function initMap() {
+            navigator.geolocation.getCurrentPosition(coordSuccess, coordFail);
+        }
+
+        
+        console.log(myLatLng.lat +" / " + myLatLng.lng);
 
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
             mapOption = {
-                center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
-            };  
+                center: new kakao.maps.LatLng(37.51578796247853, 127.09910998428964), // 지도의 중심좌표
+                // center: new kakao.maps.LatLng(myLatLng.lat, myLatLng.lng), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨 
+            };
 
-        // 지도를 생성합니다    
-        var map = new kakao.maps.Map(mapContainer, mapOption); 
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-        // 장소 검색 객체를 생성합니다
-        var ps = new kakao.maps.services.Places(map); 
+        // HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+        if (navigator.geolocation) {
 
-        // 카테고리로 음식점과 카페 검색합니다
-        ps.categorySearch('FD6', placesSearchCB, {useMapBounds:true}); 
+            // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+            navigator.geolocation.getCurrentPosition(function (position) {
 
-        // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-        function placesSearchCB (data, status, pagination) {
-            console.log(data);
-            if (status === kakao.maps.services.Status.OK) {
-                for (var i=0; i<data.length; i++) {
-                    displayMarker(data[i]);    
-                }       
-            }
+                myLatLng.lat = position.coords.latitude; // 위도
+                myLatLng.lng = position.coords.longitude; // 경도
+
+                var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                    message = '<div style="padding:5px; ">현위치</div>'; // 인포윈도우에 표시될 내용입니다
+
+                // 마커와 인포윈도우를 표시합니다
+                displayMarker(locPosition, message);
+
+            });
+
+        } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+
+            var locPosition = new kakao.maps.LatLng(37.51578796247853, 127.09910998428964),
+                message = 'geolocation을 사용할수 없어요..'
+
+            displayMarker(locPosition, message);
         }
 
-        console.log(ps);
+        // 지도에 마커와 인포윈도우를 표시하는 함수입니다
+        function displayMarker(locPosition, message) {
 
-        // 지도에 마커를 표시하는 함수입니다
-        function displayMarker(place) {
-            // 마커를 생성하고 지도에 표시합니다
+            // 마커를 생성합니다
             var marker = new kakao.maps.Marker({
                 map: map,
-                position: new kakao.maps.LatLng(place.y, place.x) 
+                position: locPosition
             });
 
-            // 마커에 클릭이벤트를 등록합니다
-            kakao.maps.event.addListener(marker, 'click', function() {
-                // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
-                infowindow.open(map, marker);
-            });
+            var iwContent = message, // 인포윈도우에 표시할 내용
+                iwRemoveable = true;
+
+            // // 인포윈도우를 생성합니다
+            // var infowindow = new kakao.maps.InfoWindow({
+            //     content : iwContent,
+            //     removable : iwRemoveable
+            // });
+
+            // // 인포윈도우를 마커위에 표시합니다 
+            // infowindow.open(map, marker);
+
+            // 지도 중심좌표를 접속위치로 변경합니다
+            map.setCenter(locPosition);
         }
+
+
+
+        // 지도를 클릭한 위치에 표출할 마커입니다
+        var marker = new kakao.maps.Marker({
+            // 지도 중심좌표에 마커를 생성합니다 
+            position: map.getCenter()
+        });
+        // 지도에 마커를 표시합니다
+        marker.setMap(map);
+        
+        // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+        var infowindow = new kakao.maps.InfoWindow({zindex:1});
+
+
+        // 지도에 클릭 이벤트를 등록합니다
+        // 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+        kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+
+            // 클릭한 위도, 경도 정보를 가져옵니다 
+            var latlng = mouseEvent.latLng;
+
+            // 팝업
+
+            var title = prompt("매장 이름을 입력하세요", "");
+
+            console.log(title);
+
+            if (title === "") {
+                alert("매장 이름을 입력하세요.")
+                return;
+
+            } else if (title == null) {
+                return;
+
+            } else {
+
+                var data = [title, latlng];
+
+                positions.push(data);
+
+                // 마커 이미지의 이미지 주소입니다
+                var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+                for (var i = 0; i < positions.length; i++) {
+
+                    // 마커 이미지의 이미지 크기 입니다
+                    var imageSize = new kakao.maps.Size(24, 35);
+
+                    // 마커 이미지를 생성합니다    
+                    var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+                    // 마커를 생성합니다
+                    var markerInfo = new kakao.maps.Marker({
+                        map: map, // 마커를 표시할 지도
+                        position: latlng, // 마커를 표시할 위치
+                        title: title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                        image: markerImage // 마커 이미지 
+                    });
+
+                }
+
+            }
+
+            var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+            message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+            var resultDiv = document.getElementById('clickLatlng');
+            resultDiv.innerHTML = message;
+
+            info();
+
+        });
 
 
         
-
-
+        function info() {
+            console.log(positions);
+        }
 
 
 

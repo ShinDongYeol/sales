@@ -8,31 +8,8 @@
                                  VALUES( #{empId}, #{placeName}, #{roadAddr}, #{addr}, #{x}, #{y}, #{targetDate}, now(), null)
     </insert>
 
-    <select id="selectTodoList" parameterType="java.util.Map" resultType="PlaceVO">
-
-        SELECT *
-        FROM sales_store
-        WHERE store_no not in( SELECT store_no from sales_workflow)
-            AND emp_id  = #{empId}
-
-    </select>
-
-    <update id="updateTodoList" parameterType="PlaceVO">
-
-         UPDATE sales_store
-        <set>
-            <if test="placeName neq null and placeName neq ''">store_name = ${placeName},</if>
-            <if test="roadAddr neq null and roadAddr neq ''">store_road_addr = ${roadAddr},</if>
-            <if test="addr neq null and addr neq ''">store_addr = ${addr},</if>
-            <if test="x neq null and x neq ''">lat_x = ${x},</if>
-            <if test="y neq null and y neq ''">lng_y = ${y},</if>
-            <if test="targetDate neq null and targetDate neq ''">sales_date = ${targetDate},</if>
-            mod_date = now()
-        </set>
-        WHERE emp_id  = #{empId}
-           AND store_no  = #{storeNo}
 
 
-    </update>
+
 
 </mapper>

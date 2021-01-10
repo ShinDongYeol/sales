@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sales.main.mapper.mywork.MyWorkMapper">
+
+
+    <select id="selectTodoList" parameterType="java.util.Map" resultType="PlaceVO">
+
+       select store_no as storeNo,
+               store_id as storeId,
+               store_name as placeName,
+               store_road_addr as roadAddr,
+               s.status_no as statusNo,
+               status_name as statusName
+        from sales_store s
+          inner join sales_status sc on s.status_no = sc.status_no
+        where s.emp_id = #{empId}
+            and s.sales_date = #{toDate}
+
+    </select>
+
+    <update id="updateWork" parameterType="java.util.Map">
+
+         UPDATE sales_store
+        <set>
+            <if test="storeId neq null and storeId neq ''">store_id = #{storeId},</if>
+            status_no = #{status},
+            mod_date = now()
+
+        </set>
+        WHERE emp_id  = #{empId}
+           AND store_no  = #{storeNo}
+
+
+    </update>
+
+
+    <select id="getStatus" resultType="StatusCodeVO">
+        select status_no as codeNo,
+               status_name as codeName
+        from sales_status
+        order by status_no
+    </select>
+
+
+</mapper>
+

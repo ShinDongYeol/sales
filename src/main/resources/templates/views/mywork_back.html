@@ -111,7 +111,7 @@
                     <div class="input-group date">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         <input type="text" autocomplete="off" class="form-control"
-                               readonly="readonly"  id="timePicker" style="margin-right: 10px;width: 150px" th:value="${nowDate}">
+                               readonly="readonly"  `id="timePicker" style="margin-right: 10px;width: 150px" th:value="${nowDate}">
                     </div>
                     <!-- <button type="button" class="btn btn-default btn-sm">조회</button> -->
                     <div class="right">
@@ -141,7 +141,22 @@
                     </thead>
                     <tbody id="dataBody">
                         <tr>
-                            <td><button type="button" id="modifyBtn" class="btn btn-primary btn-sm">수정</button></td>
+                            <!-- <td>영업일</td> -->
+                            <td>StoreId</td>
+                            <td>영업장</td>
+                            <td>
+                                <select id="status" name="status">
+                                <option value="">타겟</option>
+                                <option value="">소싱</option>
+                                <option value="">진행중</option>
+                                <option value="">부재</option>
+                                <option value="">실패</option>
+                                <option value="">강성실패</option>
+                                <option value="">기계약</option>
+                                <option value="">불가</option>
+                            </select>
+                            </td>
+                            <td><button type="button" class="btn btn-primary btn-sm">수정</button></td>
                             <td><button type="button" class="btn btn-danger btn-sm">삭제</button></td>
                         </tr>
                     </tbody>
@@ -152,39 +167,13 @@
             <div class="modal-dialog modal-dialog-centered modal-sm" >
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>수정하기</h4>
+                        <h4>Alert</h4>
                     </div>
-                    <div class="modal-body" id="modalContent">
-                        <input type="hidden" id="storeNo"  name="storeNo">
-                        <table class="table table-hover modal-table">
-                            <tbody id="addrList">
-                               <tr>
-                                   <th>storeId</th>
-                                    <td>
-                                        <input type="text" id="storeId" value="" class="form-control">
-                                    </td>
-                               </tr>
-                                <tr>
-                                   <th>status</th>
-                                    <td>
-                                        <select id="status" name="status" class="form-control">
-                                            <option value="1">타겟</option>
-                                            <option value="2">소싱</option>
-                                            <option value="3">진행중</option>
-                                            <option value="4">부재</option>
-                                            <option value="5">실패</option>
-                                            <option value="6">강성실패</option>
-                                            <option value="7">기계약</option>
-                                            <option value="8">불가</option>
-                                        </select>
-                                    </td>
-                               </tr>
-                            </tbody>
-                        </table>
+                    <div class="modal-body alert" id="modalContent">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-primary" onclick="modifyWork();" style="width: 80px">수정</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 80px">닫기</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px">Close</button>
                     </div>
                 </div>
             </div>
@@ -244,30 +233,15 @@
                 var td3 = $('<td></td>');
                 var td4 = $('<td></td>');
                 var td5 = $('<td></td>');
-                var modifyBtn = $('<button>수정</button>')
-                var delBtn = $('<button>삭제</button>')
+                selectBox = makeSelect(index, data.codeList, obj);
 
-                modifyBtn.attr('type', 'button');
-                modifyBtn.addClass('btn btn-primary btn-sm');
-                modifyBtn.on('click', function () {
-                    showModal(obj.storeId, obj.statusNo, obj.storeNo);
-                });
-
-                delBtn.attr('type', 'button');
-                delBtn.addClass('btn btn-danger btn-sm');
-                delBtn.on('click', function () {
-                    delWork(obj.storeNo);
-                });
-
-                td1.append(obj.storeId);
+                td1.append(obj.stordId);
                 td2.append(obj.placeName);
-                td3.append(obj.statusName);
-                td4.append(modifyBtn);
+                td3.append(selectBox);
 
                 tr.append(td1);
                 tr.append(td2);
                 tr.append(td3);
-                tr.append(td4);
 
                 tbody.append(tr);
             });
@@ -294,75 +268,13 @@
 
             console.log(select);
             return select;
-        }
 
-        function showModal(storeId, statusNo, storeNo) {
 
-            $('#modify').modal('show');
-
-            $('#modify').on('shown.bs.modal', function () {
-                $('#storeId').val(storeId);
-                $('#status').val(statusNo);
-                $('#storeNo').val(storeNo);
-            })
-        }
-
-        function modifyWork() {
-            var storeNo =    $('#storeNo').val();
-            var storeId =    $('#storeId').val();
-            var statusNo =   $('#status').val();
-
-            var param = {
-                storeNo : storeNo,
-                storeId: storeId,
-                statusNo : statusNo
-            }
-
-            $.ajax({
-                url : '/mywork/modify',
-                data: param,
-                dataType: 'json',
-            }).done(function (data) {
-                if(data.resultCode == 200)  {
-                    alert('수정되었습니다.')
-                    location.reload();
-                }else {
-                    alert('수정이 실패했습니다.');
-                    return false;
-                }
-            }).fail(function(data, textStatus, errorThrown){
-                console.log(textStatus);
-            });
-        }
-
-        function delWork(storeNo) {
-
-            var isConfirm = confirm('정말 삭제하시겠습니까?') ;
-
-            if(isConfirm) {
-
-                $.ajax({
-                    url : '/mywork/delWork',
-                    data: {storeNo: storeNo},
-                    dataType: 'json',
-                }).done(function (data) {
-                    if(data.resultCode == 200)  {
-                        alert('삭제 되었습니다.')
-                        location.reload();
-                    }else {
-                        alert('삭제가 실패했습니다.');
-                        return false;
-                    }
-                }).fail(function(data, textStatus, errorThrown){
-                    console.log(textStatus);
-                });
-            }
         }
 
         $(document).ready(function () {
             initDate();
             getDate();
-
 
         });
 
