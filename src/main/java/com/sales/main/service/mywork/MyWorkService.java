@@ -32,5 +32,9 @@ public class MyWorkService {
         return mapper.updateWork(param);
     }
 
+    public int delWork(Map<String, Object> param) throws Exception {
+        return mapper.delWork(param);
+    }
+
 
 }

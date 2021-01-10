@@ -15,4 +15,5 @@ public interface MyWorkMapper {
     List<StatusCodeVO> getStatus() throws Exception;
     List<PlaceVO> selectTodoList(Map<String, Object> param) throws Exception;
     int updateWork(Map<String, Object> param) throws Exception;
+    int delWork(Map<String, Object> param) throws Exception;
 }

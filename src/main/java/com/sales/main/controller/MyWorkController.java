@@ -119,4 +119,37 @@ public class MyWorkController {
 
     }
 
+
+
+    @RequestMapping("/mywork/delWork")
+    @ResponseBody
+    public Map<String, Object> delWork(HttpServletRequest request,
+                                          @RequestParam( value = "storeNo") String storeNo){
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            HttpSession session = request.getSession();
+            Map<String, Object> param = new HashMap<>();
+
+            param.put("empId", "aa");
+            param.put("storeNo", storeNo);
+
+            int result = service.delWork(param);
+            if(result > 0) {
+                resultMap.put("resultCode", 200);
+            }else {
+                resultMap.put("resultCode", 500);
+            }
+
+
+        }catch (Exception e) {
+            resultMap.put("resultCode", 500);
+            e.printStackTrace();
+        }
+
+        return resultMap;
+
+    }
+
 }
