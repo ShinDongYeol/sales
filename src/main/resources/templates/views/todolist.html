@@ -19,6 +19,7 @@
             background-color: #00aaff;
             border: 1px solid #00aaff;
             color: white;
+            margin-bottom: 0px;
         }
 
         .dropdown-toggle a{
@@ -65,7 +66,7 @@
         }
 
         .main {
-            margin: 20px;
+            margin: 10px;
         }
 
         .date {
@@ -268,7 +269,7 @@
             tr.attr('id', 'tr'+count);
 
             td1.append('<input type="text" class="form-control" id="store'+ count +  '" name="store">')
-            td2.append('<input type="text" class="form-control" id="addr'+ count +  '" name="addr">');
+            td2.append('<input type="text" class="form-control"  placeholder="주소" id="addr'+ count +  '" name="addr">');
             td2.append('<input type="hidden" class="form-control" id="data'+ count +  '" name="data">');
 
             btn.attr('type', 'button');
