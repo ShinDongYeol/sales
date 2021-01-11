@@ -21,6 +21,7 @@
             background-color: #00aaff;
             border: 1px solid #00aaff;
             color: white;
+            margin-bottom: 0px;
         }
 
 
@@ -48,18 +49,13 @@
         .navbar-nav :hover {
             background-color: black;
         }
-
-        .main {
-            /* margin: 10px; */
-        }
-
-        .detail {
+        /* .detail {
             overflow: hidden;
             background-color: rgba(185, 183, 183, 0.467);
             border-radius: 5px;
             padding: 10px 5px;
             line-height: 0.5em;
-        }
+        } */
 
         .left {
             float: left;
@@ -70,12 +66,17 @@
             padding-bottom: 7px;
         }
 
-        section {
-            padding: 20px;
-        }
-
         .date {
-            padding: 10px 0;
+            padding: 5px 10px;
+            z-index: 2;
+        }
+        .main {
+            position: relative;
+        }
+        .map {
+            position: absolute;
+            top: 0px;
+            z-index: 0;
         }
 
         .wrap {position: absolute;left: 0;bottom: 40px;width: 160px;height: 70px;margin-left: -144px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
@@ -128,10 +129,10 @@
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     <input type="text" autocomplete="off" class="form-control"
                            readonly="readonly"  id="timePicker" style="margin-right: 10px;width: 130px" th:value="${nowDate}">
-                    <button type="button" class="btn btn-default btn-sm right" onclick="search();">조회</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="search();">조회</button>
                 </div>
             </div>
-            <div id="map" style="width:100%;height:600px; "></div>
+            <div class="map" id="map" style="width:100%;height:800px; "></div>
             <div id="clickLatlng"></div>
         </div>
     </section>
@@ -142,7 +143,7 @@
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
     <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.ko.js}"></script>
     <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=53f4cfea53e9308630e07a7a63e9e368"></script>
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ee3b34b417b65bc0b7697bb57a7714ed"></script>
 
 
     <script>
@@ -156,12 +157,12 @@
 
         var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-        // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-        var mapTypeControl = new kakao.maps.MapTypeControl();
+        // // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+        // var mapTypeControl = new kakao.maps.MapTypeControl();
 
-        // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-        // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+        // // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+        // // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+        // map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 
         // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
         var zoomControl = new kakao.maps.ZoomControl();
