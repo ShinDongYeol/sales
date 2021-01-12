@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-        
-
+    <title>Team</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -28,18 +25,17 @@
         .dropdown-menu li {
             color: white;
         }
-        
+
         table {
+            width: 100%;
+            border-collapse: collapse;
             width: 100%;
         }
 
-        table
-        , td
-        , th {
-            border: 1px solid #777777;
-            padding: 5px;
+        td, th {
+            padding: 8px;
             text-align: center;
-            font-size: small;
+            border-bottom: 1px solid #ddd;
         }
 
         .navbar-nav :hover {
@@ -97,41 +93,27 @@
 
     <div class="main">
         <h2>Team</h2>
-        <div>
-            <select id="workDate" name="workDate">
-                <option value="workDate">2020-12-01</option>
-                <option value="workDate">2020-11-30</option>
-                <option value="workDate">2020-11-29</option>
-            </select>
+        <div class="date">
+            <div class="input-group date">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                <input type="text" autocomplete="off" class="form-control"
+                       readonly="readonly"  id="timePicker" style="margin-right: 10px;width: 130px" th:value="${nowDate}">
+                <button type="button" class="btn btn-default btn-sm right" onclick="search();">조회</button>
+            </div>
         </div>
 
         <hr/>
         
         <table>
-            <tr>
-                <th>순위</th>
-                <th>영업일</th>
-                <th>Team</th>
-                <th>소싱률</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2020-12-22</td>
-                <td style="width: 35%">Team1</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>2020-12-22</td>
-                <td style="width: 35%">Team2</td>
-                <td>%</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>2020-12-22</td>
-                <td style="width: 35%">Team3</td>
-                <td>%</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>순위</th>
+                    <th>영업일</th>
+                    <th>Team</th>
+                    <th>소싱률</th>
+                </tr>
+            </thead>
+            <tbody id="teamBody"></tbody>
         </table>
         
         <div>
@@ -157,6 +139,89 @@
             </div>
         </div>
     </div>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker-theme.css}" />
+    <script type="text/javascript" th:src="@{/js/moment/moment.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.ko.js}"></script>
+    <script>
+
+        function initDate() {
+            //datepicker
+            console.log(new Date());
+            console.log(moment().format('YYYY-MM-DD'));
+            $('#timePicker').datepicker({
+                calendarWeeks: false,
+                todayHighlight: true,
+                autoclose: true,
+                format: 'yyyy-mm-dd',
+                language: "ko",
+                orientation: "bottom auto",
+                ignoreReadonly: true,
+                endDate : moment().format('YYYY-MM-DD')
+            });
+        }
+
+
+        function getData() {
+
+            var toDate = $('#timePicker').val();
+
+            $.ajax({
+                url : '/team/getData',
+                data: {toDate: toDate},
+                dataType: 'json',
+            }).done(function (data) {
+                console.log(data);
+                drawTable(data);
+            }).fail(function(data, textStatus, errorThrown){
+                console.log(textStatus);
+            });
+        }
+
+        function drawTable(data) {
+            var tbody = $('#teamBody');
+            tbody.empty();
+
+            if(data.teamList.length  > 0) {
+
+                $.each(data.teamList, function (index, obj) {
+                    var tr = $('<tr></tr>');
+                    var td1 = $('<td></td>');
+                    var td2 = $('<td></td>');
+                    var td3 = $('<td></td>');
+                    var td4 = $('<td></td>');
+
+                    td1.append(obj.rn);
+                    td2.append(obj.toDate);
+                    td3.append(obj.teamName);
+                    td4.append(obj.success);
+
+                    tr.append(td1);
+                    tr.append(td2);
+                    tr.append(td3);
+                    tr.append(td4);
+
+                    tbody.append(tr);
+                });
+            }else {
+                var tr = $('<tr></tr>');
+                var td1 = $('<td colspan="4"><span style="color:red">데이터가 없습니다.</span></td>');
+                tr.append(td1);
+                tbody.append(tr);
+            }
+        }
+
+        function search(){
+            getData();
+        }
+
+        $(document).ready(function () {
+            initDate();
+            search();
+        });
+
+    </script>
     
 </body>
 </html>

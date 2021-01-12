@@ -47,7 +47,7 @@ public class MyWorkController {
 
     @RequestMapping("/mywork/getData")
     @ResponseBody
-    public Map<String, Object> getDate(HttpServletRequest request,
+    public Map<String, Object> getData(HttpServletRequest request,
                                        @RequestParam( value = "toDate") String toDate)  {
 
         Map<String, Object> resultMap = new HashMap<>();

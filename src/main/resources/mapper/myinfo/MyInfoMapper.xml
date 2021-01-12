@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sales.main.mapper.myinfo.MyInfoMapper">
+
+    <select id="getMyWorkInfo" parameterType="java.util.Map" resultType="MyWorkInfoVO">
+
+        SELECT toDate,
+                COUNT(status_no)  AS total,
+                SUM(CASE WHEN status_no = 2 THEN 1 ELSE 0 END) as cnt
+        FROM (
+                SELECT DATE_FORMAT(reg_date, '%Y-%m-%d') toDate,
+                    status_no
+                FROM sales_store
+                WHERE emp_id = #{empId}
+                    AND DATE_FORMAT(sales_date, '%Y-%m-%d') <![CDATA[ >= ]]>  #{startDate}
+                    AND DATE_FORMAT(sales_date, '%Y-%m-%d') <![CDATA[ <= ]]>  #{endDate}
+                    AND del_yn ='N'
+                )a
+        GROUP BY toDate
+        ORDER BY toDate asc
+
+    </select>
+
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sales.main.mapper.team.TeamMapper">
+
+    <select id="getTeamInfo" parameterType="java.util.Map" resultType="TeamInfoVO">
+
+        WITH  t AS (
+            SELECT toDate,
+                   team_name,
+                   COUNT(status_no)  AS total,
+                   SUM(CASE WHEN status_no = 2 THEN 1 ELSE 0 END) as cnt
+            FROM (
+                     SELECT DATE_FORMAT(st.reg_date, '%Y-%m-%d') toDate,
+                            status_no,
+                            team_name
+                     FROM sales_store st
+                              INNER JOIN sales_employee em on st.emp_id = em.emp_id
+                              INNER JOIN sales_teams tm    on em.team_code =  tm.team_code
+                     WHERE DATE_FORMAT(st.reg_date, '%Y-%m-%d') = #{toDate}
+                       AND del_yn ='N'
+                 )a
+            GROUP BY toDate, team_name
+        )
+        SELECT *
+        FROM (
+                 SELECT ROW_NUMBER() over (ORDER BY success DESC ) as rn,
+                        toDate,
+                        team_name as teamName,
+                        IF(success = 0 , '0.00%', CONCAT(success, '%')) as success
+                 FROM (
+                          SELECT toDate,
+                                 team_name,
+                                 ROUND(if(cnt = 0, 0, cnt / total), 2) as success
+                          FROM t
+                      ) a
+             )b
+        ORDER BY rn asc, toDate asc, teamName asc
+
+    </select>
+
+
+</mapper>

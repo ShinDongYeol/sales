@@ -58,6 +58,10 @@ dependencies {
     compile group: 'org.webjars', name: 'font-awesome', version: '5.15.0'
 
 
+	// https://mvnrepository.com/artifact/org.webjars/jquery-ui
+	compile group: 'org.webjars', name: 'jquery-ui', version: '1.12.1'
+
+
 	compile group: 'org.webjars', name: 'jquery-form', version: '4.2.2'
 	compile 'org.webjars:font-awesome:5.14.0'
 

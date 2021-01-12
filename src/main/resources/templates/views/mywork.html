@@ -196,17 +196,17 @@
 
         function initDate() {
             //datepicker
+            console.log(new Date());
+            console.log(moment().format('YYYY-MM-DD'));
             $('#timePicker').datepicker({
-
                 calendarWeeks: false,
                 todayHighlight: true,
                 autoclose: true,
-                setDate: new Date(),
-                maxDate : 0,
                 format: 'yyyy-mm-dd',
                 language: "ko",
                 orientation: "bottom auto",
-                ignoreReadonly: true
+                ignoreReadonly: true,
+                endDate : moment().format('YYYY-MM-DD')
             });
         }
 

@@ -17,7 +17,7 @@
         from sales_store s
           inner join sales_status sc on s.status_no = sc.status_no
         where s.emp_id = #{empId}
-            and s.sales_date = #{toDate}
+            and DATE_FORMAT(s.sales_date, '%Y-%m-%d') = #{toDate}
             AND del_yn = 'N'
 
     </select>
