@@ -4,6 +4,7 @@ import com.sales.main.service.myinfo.MyInfoService;
 import com.sales.main.utils.DateUtils;
 import com.sales.main.vo.StatusCodeVO;
 import com.sales.main.vo.member.MemberVO;
+import com.sales.main.vo.member.TeamVO;
 import com.sales.main.vo.myinfo.MyWorkInfoVO;
 import com.sales.main.vo.place.PlaceVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,17 @@ public class MyInfoController {
 
 
     @RequestMapping("/view/myinfo")
-    public ModelAndView myinfoView() {
+    public ModelAndView myinfoView(HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
 
         try {
 
+            HttpSession session = request.getSession();
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+
             String nowDate = DateUtils.getNowTimeToString("yyyy-MM-dd");
             view.addObject("nowDate", nowDate);
+            view.addObject("mem", vo);
             view.setViewName("views/myinfo");
 
         }catch (Exception e) {
@@ -51,9 +56,14 @@ public class MyInfoController {
         ModelAndView view = new ModelAndView();
 
         try {
-
-            HttpSession session = request.getSession();
             String nowDate = DateUtils.getNowTimeToString("yyyy-MM-dd");
+            HttpSession session = request.getSession();
+
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+            List<TeamVO> teamList = service.teamInfo();
+
+            view.addObject("teamList", teamList);
+            view.addObject("mem", vo);
             view.addObject("nowDate", nowDate);
             view.setViewName("views/modifyInfo");
 

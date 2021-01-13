@@ -10,8 +10,8 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-	
-	
+
+
 	  @Override
 	    public void addCorsMappings(CorsRegistry registry) {
 	        registry.addMapping("/**")
@@ -27,6 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/main/**", "/webjars/**", "/dist/**", "/plugins/**", "/css/**")
                 .excludePathPatterns("/images/**", "/js/**", "/font", "/webfonts/**");
     }
+
+
 
 
     @Bean

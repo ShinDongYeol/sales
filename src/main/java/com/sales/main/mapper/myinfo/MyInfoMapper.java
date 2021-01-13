@@ -10,6 +10,5 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface MyInfoMapper {
-
     List<MyWorkInfoVO> getMyWorkInfo(Map<String, Object> param) throws Exception;
 }

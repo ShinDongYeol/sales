@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -55,53 +55,138 @@
           color: black;
         }
 
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            padding-right: calc(1.5em + .75rem);
+            background-repeat: no-repeat;
+            background-position: right calc(.375em + .1875rem) center;
+            background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+        }
+
         </style>
 
 
 </head>
 <body>
-
-    
   <div>
     <h2 style="text-align: center; font-size: x-large;"><strong>정보 수정</strong></h2>
 
-    <form action="home.html" class="col-sm-10 col-ms-8 col-lg-6">
+    <form action="/myinfo/modify" method="post" id="modifyFrm" class="col-sm-10 col-ms-8 col-lg-6">
         <div>
-            <label>* 사번</label>
+            <label style="font-weight: bold;font-size: 15px">* 사번</label>
             <br/>
-            <p>사번</p>
+            <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpId()}"></span>
+        </div>
+        <div>
+            <label style="font-weight: bold;font-size: 15px">* 이름</label>
+            <br/>
+            <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpName()}"></span>
         </div>
 
-        <div>                
-            <label>* 이름</label>
-            <br/>
-            <p>이름</p>
-        </div>
-
-        <div>    
+        <div class="form-group">
             <label>* 비밀번호</label>
-            <input type="password" id="pw" name="pw">
+            <input type="password" class="form-control" id="empPw" name="empPw">
         </div>
 
-        <div>    
+        <div class="form-group">
             <label>* 비밀번호 확인</label>
-            <input type="password" id="pwCheck" name="pwCheck">
+            <input type="password"  class="form-control" id="confirmPw" name="confirmPw">
         </div>
 
         <div>    
             <label for="team">*팀</label>
-            <select id="team" name="team">
-                <option value="team1">1</option>
-                <option value="team2">2</option>
-                <option value="team3">3</option>
+            <select name="team" id="team" class="form-control">
+                <option th:each="team : ${teamList}" th:value="${team.teamCode}" th:text="${team.teamName}" th:selected="${mem.getTeamCode() == team.teamCode}"></option>
             </select>
         </div>
 
-        <button type="button" class="btn btn-default" onclick="location.href='myinfo.html'">취소</button>
-        <button type="submit" class="btn btn-primary">저장</button>
+        <button type="button" class="btn btn-primary" onclick="modifyUser();">수정</button>
+        <button type="button" class="btn btn-default" onclick="location.href='/view/myinfo'">취소</button>
+
 
     </form>
 </div>
-    
 </body>
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+<script>
+
+    function validPw() {
+        var pw = $('#empPw').val();
+        var confirmPw = $('#confirmPw').val();
+
+        if(pw != confirmPw) {
+            showAlert('비밀번호가 일치하지 않습니다.');
+            $('#confirmPw').focus();
+            return false;
+        }
+        return true;
+    }
+
+    function validation() {
+
+        $('#modifyFrm').validate({
+            rules: {
+                empPw: {
+                    required: true
+                },
+                confirmPw: {
+                    required: true
+                },
+                team: {
+                    required: function () {
+                        return ($("#team option:selected").val() === "");
+                    }
+                }
+            },
+            messages: {
+                empPw: {
+                    required: "비밀번호를 입력하시오."
+                },
+                confirmPw: {
+                    required: "비밀번호 확인을 입력하시오."
+                },
+                telComp: {
+                    required: "팀을 선택해주십시오."
+                }
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+    }
+
+
+    function modifyUser() {
+        if( validPw()) {
+            $('#modifyFrm').submit();
+        }
+
+    }
+
+    (function(){
+        validation();
+    })();
+
+
+</script>
 </html>
