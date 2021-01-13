@@ -126,7 +126,8 @@
             <div class="left">
                 <div class="input-group date">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    <input type="text" autocomplete="off" class="form-control" id="timePicker" style="margin-right: 10px;width: 150px" th:value="${nowDate}">
+                    <input type="text" autocomplete="off"
+                           readonly class="form-control" id="timePicker" style="margin-right: 10px;width: 150px" th:value="${nowDate}">
                 </div>
 
             </div>
@@ -390,15 +391,14 @@
     function initDate() {
         //datepicker
         $('#timePicker').datepicker({
-
             calendarWeeks: false,
             todayHighlight: true,
             autoclose: true,
-            setDate: new Date(),
-            maxDate : 0,
             format: 'yyyy-mm-dd',
             language: "ko",
-            orientation: "bottom auto"
+            orientation: "bottom auto",
+            ignoreReadonly: true,
+            endDate : moment().format('YYYY-MM-DD')
         });
     }
 
