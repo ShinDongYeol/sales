@@ -27,7 +27,7 @@ public class MyInfoController {
 
 
     @RequestMapping("/view/myinfo")
-    public ModelAndView loginView() {
+    public ModelAndView myinfoView() {
         ModelAndView view = new ModelAndView();
 
         try {
@@ -43,6 +43,25 @@ public class MyInfoController {
         return view;
     }
 
+
+
+    @RequestMapping("/view/modifyInfo")
+    public ModelAndView modifyInfo(HttpServletRequest request) {
+        ModelAndView view = new ModelAndView();
+
+        try {
+
+            HttpSession session = request.getSession();
+            String nowDate = DateUtils.getNowTimeToString("yyyy-MM-dd");
+            view.addObject("nowDate", nowDate);
+            view.setViewName("views/modifyInfo");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return view;
+    }
 
     @RequestMapping("/myinfo/getData")
     @ResponseBody

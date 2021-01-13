@@ -14,4 +14,5 @@ public interface MemberMapper {
     List<TeamVO> teamInfo() throws Exception;
     int searchMember(Map<String, Object> param) throws Exception;
     int insertMember(MemberVO svo) throws Exception;
+    MemberVO getMemberInfo(Map<String, Object> param) throws Exception;
 }

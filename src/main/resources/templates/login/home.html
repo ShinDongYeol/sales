@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,27 +78,33 @@
 
 </head>
 <body>
-
 <section>
     <div class="simple-login-container">
         <!-- <h2 style="text-align: center; font-size: x-large;"><strong>Login</strong></h2> -->
         <h2><strong>Login</strong></h2>
-
-        <form action="/view/map" method="get">
+        <form name="rsafrm" id="rsafrm">
+            <input type="hidden" id="rsaPublicKeyModulus" name="rsaPublicKeyModulus"  />
+            <input type="hidden" id="rsaPpublicKeyExponent" name="rsaPpublicKeyExponent" />
+        </form>
+        <form id="loginFrm" method="post" action="">
+            <input type="hidden" name="securedUsername" id="securedUsername" value="" />
+            <input type="hidden" name="securedPassword" id="securedPassword" value="" />
+        </form>
+        <form id="mainFrm">
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <input type="text" class="form-control" placeholder="사번">
+                    <input type="text" class="form-control" placeholder="사번" id="userId"  name="userId">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <input type="password" placeholder="Password" class="form-control">
+                    <input type="password" placeholder="Password" class="form-control" id="userPw" name="userPw">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
                     <button type="button" class="btn btn-block btn-default left" onclick="location.href='/view/join'">사원 등록</button>
-                    <button type="submit" class="btn btn-block btn-primary right">login</button>
+                    <button type="button" class="btn btn-block btn-primary right" id="loginBtn">login</button>
                     <div class="pwReset">
                         <a href="#">비밀번호 초기화</a>
                     </div>
@@ -107,31 +113,119 @@
         </form>
     </div>
 </section>
+<script type="text/javascript" th:src="@{/js/security/jsbn.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/rsa.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/prng4.js}"></script>
+<script type="text/javascript" th:src="@{/js/security/rng.js}"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        initLoginForm();
+        getRSAKeys();
+    });
 
-<!-- <div class="simple-login-container">
-    <h2 style="text-align: center; font-size: x-large;"><strong>Login</strong></h2>
 
-    <form action="/view/map" method="get">
-        <div class="row">
-            <div class="col-md-12 form-group">
-                <input type="text" class="form-control" placeholder="ID">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 form-group">
-                <input type="password" placeholder="Password" class="form-control">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 form-group">
-                <button type="button" class="btn btn-block btn-default" onclick="location.href='/view/join'">사원 등록</button>
-                <button type="submit" class="btn btn-block btn-primary">login</button>
-                <a href="#" style="text-align: center;">비밀번호 초기화</a>
-            </div>
-        </div>
-    </form>
-</div> -->
+    function initLoginForm(){
 
+        $('#userId, #userPw').each(function(){
+            $(this).val('');
+        });
+
+        $('#loginBtn').on('click', function(e){
+            goLogin();
+        });
+    }
+
+    function getRSAKeys() {
+
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "/login/getRSAKeyValue"
+        }).done(function (data){
+            $('#rsaPublicKeyModulus').val(data.publicKeyModulus);
+            $('#rsaPpublicKeyExponent').val(data.publicKeyExponent);
+
+        }) .fail(function(error){
+            console.log(error);
+        });
+    }
+
+    //아이디 검사 - 영문 + 숫자만 가능 최소길이 4
+    function validAccount()  {
+        var account = $('#userId').val();
+        if(account.length  == 0 ) {
+            alert('아이디를 입력해주십시오.');
+            return false;
+        }
+
+        return true;
+    }
+
+
+    function validPassword() {
+        var passwd = $('#userPw').val();
+        if(passwd.length == 0) {
+            alert('패스워드를 입력해주십시오.');
+            return false;
+        }
+        return true;
+    }
+
+    function submitEncryptedForm() {
+        console.log('testaa');
+        var securedLoginForm = document.getElementById('loginFrm');
+        var rsa = new RSAKey();
+        var rsaF = document.rsafrm;
+
+        rsa.setPublic(rsaF.rsaPublicKeyModulus.value, rsaF.rsaPpublicKeyExponent.value);
+        // 사용자ID와 비밀번호를 RSA로 암호화한다.
+        securedLoginForm.securedUsername.value = rsa.encrypt($("#userId").val());  // id 암호화
+        securedLoginForm.securedPassword.value = rsa.encrypt($("#userPw").val());  // passwd 암호화
+
+    }
+
+
+    function goLogin () {
+        if(validAccount()) {
+            if(validPassword()) {
+                submitEncryptedForm(); // rsa 로 id / passwd 암호화
+
+                var   userName  =    $("#loginFrm").find("#securedUsername").val();
+                var   userPasswd  =  $("#loginFrm").find("#securedPassword").val();
+
+                var param={
+                    userId :userName,
+                    userKey : userPasswd
+                };
+
+                console.log('여기타나');
+
+                $.ajax({
+                    type : "post",
+                    dataType: "json",
+                    url : "/login/loginajax",
+                    data : param,
+                    success : function (data) {
+                        console.log(data);
+                        if(data.resultCode == 200){
+                            console.log('성공');
+                            location.href ="/view/map";
+                        }else{
+                            alert(data.resultMsg);
+                            return false;
+                        }
+                    },
+                    fail:function(data){
+                        console.log(data)
+                    },
+                    error: function(data, status, error){
+                        console.log(error);
+                    }
+                });
+            }
+        }
+    }
+</script>
 
 </body>
 </html>

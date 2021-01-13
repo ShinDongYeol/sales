@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -18,6 +19,15 @@ public class WebConfig implements WebMvcConfigurer {
 	                .allowedMethods("GET", "POST, OPTION")
 	                .maxAge(3000);
 	}
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ProcessInterceptor())
+                .excludePathPatterns("/view/**", "/login/**")
+                .excludePathPatterns("/main/**", "/webjars/**", "/dist/**", "/plugins/**", "/css/**")
+                .excludePathPatterns("/images/**", "/js/**", "/font", "/webfonts/**");
+    }
+
 
     @Bean
 

@@ -30,4 +30,8 @@ public class MemberService {
     public  int insertMember(MemberVO svo) throws Exception {
         return mapper.insertMember(svo);
     }
+
+    public  MemberVO getMemberInfo(Map<String, Object> param) throws Exception {
+        return mapper.getMemberInfo(param);
+    }
 }

@@ -11,6 +11,22 @@
             order by team_code asc
     </select>
 
+
+    <select id="getMemberInfo" parameterType="java.util.Map" resultType="MemberVO">
+
+        SELECT em.emp_id as empId,
+               em.emp_pw as empPw,
+               em.emp_name as empName,
+               em.emp_position as position,
+               em.emp_phone as phone,
+               em.team_code as teamCode,
+               tm.team_name as team
+        FROM sales_employee em
+                 INNER JOIN sales_teams tm on em.team_code =  tm.team_code
+        WHERE emp_id = #{empId}
+    </select>
+
+
     <select id="searchMember" parameterType="java.util.Map" resultType="int">
 
         SELECT COUNT(*) cnt
