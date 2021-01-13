@@ -59,6 +59,7 @@
 
         .date {
             padding: 5px 0;
+            width: 300px;
         }
 
         .date span {
@@ -71,15 +72,14 @@
             float: right;
         }
         .date input {
-            width: 130px;
+            width: 100px;
         }
         .date .input-sm {
             padding: 5px 5px;
         }
         .right button {
-            margin-top: 4px;
+            margin-top: 7px;
         }
-
         
 
     </style>
@@ -100,9 +100,9 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <!-- <li><a href="/view/team"><span style="color: white;">Team</span></a></li> -->
                 	<li><a href="/view/todolist"><span style="color: white;">To-Do-List</span></a></li>
                     <li><a href="/view/mywork"><span style="color: white;">My Work</span></a></li>
+                    <li><a href="/view/team"><span style="color: white;">Team</span></a></li>
                     <li><a href="/view/myinfo"><span style="color: white;">My Info</span></a></li>
                     <li><a href="/view/login"><span style="color: white;">logout</span></a></li>
                     <!-- 
@@ -137,7 +137,7 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                         <input type="text" readonly id="startDate" class="form-control-sm fromDate" th:value="${nowDate}">
                         <span>~</span>
-                        <input type="text" readonly id="endDate" class="form-control-sm  toDate" th:value="${nowDate}" />
+                        <input type="text" readonly id="endDate" class="form-control-sm toDate" th:value="${nowDate}" />
                     </div>
                 </div>
                 <div class="right">
