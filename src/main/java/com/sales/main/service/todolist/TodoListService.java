@@ -27,7 +27,7 @@ public class TodoListService {
 
 
     @Transactional
-    public int insertTodoList(String nowDate, String dataList)  throws  Exception {
+    public int insertTodoList(String empId, String nowDate, String dataList)  throws  Exception {
 
         JSONArray arr= new JSONArray(dataList);
         List<PlaceVO> list = new ArrayList<>();
@@ -42,7 +42,7 @@ public class TodoListService {
         int result = 0;
         for(PlaceVO vo  : list )  {
             vo.setTargetDate(nowDate);
-            vo.setEmpId("aa");
+            vo.setEmpId(empId);
 
             result = mapper.insertTodoList(vo);
 

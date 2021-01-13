@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ProcessInterceptor())
-                .excludePathPatterns("/view/**", "/login/**")
+                .excludePathPatterns("/login/**", "/make/**")
                 .excludePathPatterns("/main/**", "/webjars/**", "/dist/**", "/plugins/**", "/css/**")
                 .excludePathPatterns("/images/**", "/js/**", "/font", "/webfonts/**");
     }

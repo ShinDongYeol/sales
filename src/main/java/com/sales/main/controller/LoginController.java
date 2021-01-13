@@ -34,7 +34,7 @@ public class LoginController {
 	Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 
-	@RequestMapping("/view/login")
+	@RequestMapping("/login/login")
 	public ModelAndView loginView() {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("login/home");

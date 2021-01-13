@@ -3,6 +3,7 @@ package com.sales.main.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sales.main.vo.member.MemberVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sales.main.service.todolist.TodoListService;
 import com.sales.main.utils.DateUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class TodoListController {
@@ -42,14 +46,19 @@ public class TodoListController {
 
     @RequestMapping(value = "/save/todo")
     @ResponseBody
-    public Map<String, Object> saveStore(@RequestParam(value="nowDate") String nowDate,
+    public Map<String, Object> saveStore(HttpServletRequest request,
+                                         @RequestParam(value="nowDate") String nowDate,
                                          @RequestParam(value="dataList") String dataList) {
 
         Map<String, Object> resultMap = new HashMap<>();
 
         try {
 
-            int result = service.insertTodoList(nowDate, dataList);
+            HttpSession session = request.getSession();
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+
+
+            int result = service.insertTodoList(vo.getEmpId(),nowDate, dataList);
 
             if(result > 0) {
                 resultMap.put("resultCode", 200);

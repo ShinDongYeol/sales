@@ -21,7 +21,7 @@ public class ProcessInterceptor implements HandlerInterceptor {
                     response.sendError(405);
                     return false;
                 }else{
-                    response.sendRedirect("/view/login");
+                    response.sendRedirect("/login/login");
                     result =  false;
                 }
             }else{

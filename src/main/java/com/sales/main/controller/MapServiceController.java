@@ -3,6 +3,7 @@ package com.sales.main.controller;
 import com.sales.main.service.mywork.MyWorkService;
 import com.sales.main.utils.DateUtils;
 import com.sales.main.vo.StatusCodeVO;
+import com.sales.main.vo.member.MemberVO;
 import com.sales.main.vo.place.PlaceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,8 @@ public class MapServiceController {
 
             Map<String, Object> param = new HashMap<>();
 
-            param.put("empId", "aa");
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+            param.put("empId", vo.getEmpId());
             param.put("toDate", toDate);
 
             List<PlaceVO> workList = service.selectTodoList(param);

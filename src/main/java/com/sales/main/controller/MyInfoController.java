@@ -3,6 +3,7 @@ package com.sales.main.controller;
 import com.sales.main.service.myinfo.MyInfoService;
 import com.sales.main.utils.DateUtils;
 import com.sales.main.vo.StatusCodeVO;
+import com.sales.main.vo.member.MemberVO;
 import com.sales.main.vo.myinfo.MyWorkInfoVO;
 import com.sales.main.vo.place.PlaceVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,9 @@ public class MyInfoController {
             HttpSession session = request.getSession();
             Map<String, Object> param = new HashMap<>();
 
-            param.put("empId", "aa");
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+
+            param.put("empId", vo.getEmpId());
             param.put("startDate", startDate);
             param.put("endDate", endDate);
 

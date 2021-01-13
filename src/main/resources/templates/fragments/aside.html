@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" th:fragment="asideFragment">
+        <!-- Brand Logo -->
+        <a href="/admin/list" class="brand-link">
+            <img th:src="@{/dist/img/AdminLTELogo.png}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"  style="opacity: .8">
+            <span class="brand-text font-weight-light">Admin Page</span>
+        </a>
+
+        <div class="sidebar" style="font-size: 16px;">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2 nav">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="/admin/list" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                신청회원목록
+                            </p>
+                        </a>
+                    </li>
+                    <li id="system" class="nav-item has-treeview">
+                        <a href="#" class="nav-link" id="tree">
+                              <i class="nav-icon fas fa-chart-pie"></i>
+                            <p>
+                                상품관리
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li  class="nav-item">
+                                <a href="/admin/prd/internet" class="nav-link" id="internet">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>인터넷 상품관리</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/prd/tv" class="nav-link" id="tv">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>TV상품관리</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/prd/tel" class="nav-link" id="tel">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>전화상품</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/prd/setbox" class="nav-link" id="setbox">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>셋탑박스</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/prd/wifi" class="nav-link" id="wifi">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>와이파이</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/auth/list" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p>
+                                운영자관리
+                            </p>
+                        </a>
+                    </li>
+
+                     <!--     <li class="nav-item">
+                                  <a href="#" class="nav-link">
+                            <i class="fas fa-circle nav-icon"></i>
+                            <p>Level 1</p>
+                        </a>
+                    </li>-->
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <script>
+
+            function isOpen(data) {
+
+                $('.nav li').each(function (index, obj) {
+                    $(obj).removeClass('active');
+                });
+
+                if($(data).parent().hasClass('active')){
+                    $(data).parent().removeClass('active');
+                }else{
+                    $(data).parent().addClass('active');
+                }
+            }
+
+            function setActiveMenu() {
+                var path = location.pathname;
+                var paths = path.split('/');
+
+
+                for(var i=1; i<paths.length; i++) {
+                    var $this = $('#' + paths[i]);
+                    console.log(paths[i]);
+                    if($this.length) {
+                        if(paths[i] =='internet' || paths[i] =='tv'
+                                 || paths[i] =='wifi' || paths[i] =='setbox' || paths[i] =='tel'){
+                            $('#system').addClass('menu-open');
+                            $('#tree').addClass('active');
+                        }else{
+                            $('#system').removeClass('menu-open');
+                            $('#tree').addClass('active');
+                        }
+                        $this.addClass('active');
+                        break;
+                    }
+                }
+            }
+
+        </script>
+    </aside>
+</html>

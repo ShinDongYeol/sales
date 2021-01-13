@@ -3,6 +3,7 @@ package com.sales.main.controller;
 import com.sales.main.service.mywork.MyWorkService;
 import com.sales.main.utils.DateUtils;
 import com.sales.main.vo.StatusCodeVO;
+import com.sales.main.vo.member.MemberVO;
 import com.sales.main.vo.place.PlaceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,7 +59,8 @@ public class MyWorkController {
 
             Map<String, Object> param = new HashMap<>();
 
-            param.put("empId", "aa");
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+            param.put("empId", vo.getEmpId());
             param.put("toDate", toDate);
 
             List<StatusCodeVO> codeList = service.getStatus();
@@ -67,8 +69,8 @@ public class MyWorkController {
 
             if(workList != null) {
                 goal = workList.size();
-                for(PlaceVO vo: workList) {
-                    if(vo.getStatusName().equals("소싱")) {
+                for(PlaceVO placeVO: workList) {
+                    if(placeVO.getStatusName().equals("소싱")) {
                         done++;
                     }
                 }
@@ -96,7 +98,9 @@ public class MyWorkController {
         try {
             HttpSession session = request.getSession();
             Map<String, Object> param = new HashMap<>();
-            param.put("empId", "aa");
+
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+            param.put("empId", vo.getEmpId());
             param.put("storeNo", storeNo);
             param.put("storeId", storeId);
             param.put("status", status);
