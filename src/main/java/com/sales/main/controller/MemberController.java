@@ -35,7 +35,7 @@ public class MemberController {
         this.service  = service;
     }
 
-    @RequestMapping("/view/join")
+    @RequestMapping("/main/join")
     public ModelAndView loginView() {
         ModelAndView view = new ModelAndView();
 
@@ -50,7 +50,7 @@ public class MemberController {
         return view;
     }
 
-    @RequestMapping("/mem/search/empId")
+    @RequestMapping("/main/search/empId")
     @ResponseBody
     public Map<String, Object> search (@RequestParam( value = "empId") String empId){
 
@@ -75,7 +75,7 @@ public class MemberController {
         return resultMap;
     }
 
-    @RequestMapping("/mem/register")
+    @RequestMapping("/main/register")
     public ModelAndView registerMembr(MemberVO svo)  {
 
         ModelAndView view = new ModelAndView();

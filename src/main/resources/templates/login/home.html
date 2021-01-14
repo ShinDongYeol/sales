@@ -74,6 +74,24 @@
         .row .form-group p {
             padding-top: 10px;
         }
+
+        .modal-body.alert {
+            padding: 20px;
+            overflow: hidden;
+            height: 50px;
+        }
+
+        .modal-footer {
+            padding: 0;
+            height: 60px;
+        }
+
+        .modal-footer button {
+
+            margin-top: 10px;
+            height: 50px;
+        }
+
     </style>
 
 </head>
@@ -103,14 +121,30 @@
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <button type="button" class="btn btn-block btn-default left" onclick="location.href='/view/join'">사원 등록</button>
+                    <button type="button" class="btn btn-block btn-default left" onclick="location.href='/main/join'">사원 등록</button>
                     <button type="button" class="btn btn-block btn-primary right" id="loginBtn">login</button>
                     <div class="pwReset">
-                        <a href="#">비밀번호 초기화</a>
+                        <a href="#" onclick="initPass();">비밀번호 초기화</a>
                     </div>
                 </div>
             </div>
         </form>
+    </div>
+</section>
+<section>
+    <div class="modal fade" id="moadlAlert" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>Alert</h4>
+                </div>
+                <div class="modal-body alert" id="modalContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <script type="text/javascript" th:src="@{/js/security/jsbn.js}"></script>
@@ -225,6 +259,17 @@
             }
         }
     }
+
+    function initPass(){
+        showAlert('관리자에게 문의하십시오.');
+    }
+
+    function showAlert(msg) {
+        $('#moadlAlert').modal('show');
+        $('#modalContent').empty();
+        $('#modalContent').append(msg);
+    }
+
 </script>
 
 </body>
