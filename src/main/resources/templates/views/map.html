@@ -57,6 +57,18 @@
                 z-index: 0;
             }
 
+
+            .layer {
+                z-index:1000;
+                display: none;
+                position: absolute;
+                background-color: #ffffff;
+                border: 1px solid black;
+                border-radius: 12px;
+                padding: 2px;
+            }
+
+
             .wrap {position: absolute;left: 0;bottom: 70px;width: 200px;height: 70px;margin-left: -100px;text-align: left;overflow: hidden;font-size: 12px;font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;line-height: 1.5;}
             .wrap * {padding: 0;margin: 0;}
             .wrap .info {width: 200px;height: 70px;border-radius: 5px;border-bottom: 2px solid #ccc;border-right: 1px solid #ccc;overflow: hidden;background: #fff;}
@@ -85,14 +97,76 @@
                 <div id="clickLatlng"></div>
             </div>
         </section>
-
+        <section>
+            <div class="modal fade" id="addModal" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>상점등록</h4>
+                        </div>
+                        <div class="modal-body" id="modalContent" style="height: 230px">
+                            <input type="hidden" name="x" id="x">
+                            <input type="hidden" name="y" id="y">
+                            <table class="table">
+                                <tr>
+                                    <th style="padding-top: 15px">대상날짜</th>
+                                    <td>
+                                        <div class="input-group date">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                                            <input type="text" autocomplete="off" class="form-control"
+                                                   readonly="readonly"  id="timePicker2" style="margin-right: 10px;width: 130px" th:value="${nowDate}">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-top: 15px">상호명</th>
+                                    <td><input type="text" class="form-control" id="title"></td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-top: 15px">도로명주소</th>
+                                    <td><input type="text" class="form-control" id="roadAddr" name="roadAddr" readonly></td>
+                                </tr>
+                                <tr>
+                                    <th style="padding-top: 15px">지번주소</th>
+                                    <td><input type="text" class="form-control" id="addr" name="addr" readonly></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" onclick="saveStore();">등록</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="modal fade" id="moadlAlert" role="dialog">
+                <div class="modal-dialog modal-dialog-centered modal-sm" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Alert</h4>
+                        </div>
+                        <div class="modal-body alert" id="alertContent">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="layer"></div>
+        </section>
         <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.css}" />
         <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker-theme.css}" />
         <script type="text/javascript" th:src="@{/js/moment/moment.min.js}"></script>
         <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
         <script type="text/javascript" th:src="@{/js/bootstrap-datepicker.ko.js}"></script>
+
         <script type="text/javascript"
-                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ce14a541f6d3fd02060f8fa9c4750b5"></script>
+                src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4ce14a541f6d3fd02060f8fa9c4750b5&libraries=services"></script>
 
         <script>
             var markers = [];
@@ -105,6 +179,9 @@
 
             var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
             // // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
             // var mapTypeControl = new kakao.maps.MapTypeControl();
 
@@ -116,8 +193,61 @@
             var zoomControl = new kakao.maps.ZoomControl();
             map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
+            //이벤트 부여
+            kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+                searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        showLayer(mouseEvent, result);
+                    }
+                });
+            });
+
+            //지도에서 등록을 하기 위한 레이어 띄우기
+            function showLayer(mouseEvent, result) {
+
+                //레이어객체 가져오기
+                var layer = $('.layer');
+
+                //레이어 등록하기
+                var top = mouseEvent.point.y + 20;
+                var left = mouseEvent.point.x - 10;
+
+                //레이어가 떠있으면 지우고 끝
+                if ( layer.css("display") == "block" ){
+                    $('.layer').hide();
+                    return false;
+                }else {
+
+                    //우선 비운다
+                    layer.empty();
+
+                    //레이어 내용 만들기
+                    var content = '<div id="add"><span>여기에 등록하기</span></div>'
+
+                    //내용 넣기
+                    layer.append(content);
+                    //클릭하면 모달 띄운다.
+                    $('#add').on('click', function () {
+                        showModal(mouseEvent.latLng, result);
+                    });
+
+                    //좌표 넣어주는 CSS
+                    $('.layer').css({
+                        'top': top,
+                        'left': left,
+                        'position': 'absolute'
+                    }).show();
+                }
+            }
 
 
+            //좌표로 상세주소 얻기
+            function searchDetailAddrFromCoords(coords, callback) {
+                geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+            }
+
+
+            //마커 찍기
             function addMarker(index, obj) {
 
                 var imageSrc ='';
@@ -130,7 +260,7 @@
                     imageSrc ='/images/marker1.png';
                 }
 
-                var imageSize = new kakao.maps.Size(54, 59); // 마커이미지의 크기입니다
+                var imageSize = new kakao.maps.Size(45,50); // 마커이미지의 크기입니다
                 var imageOption = {offset: new kakao.maps.Point(27, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
 
@@ -196,6 +326,19 @@
                     orientation: "bottom auto",
                     ignoreReadonly: true
                 });
+
+                $('#timePicker2').datepicker({
+
+                    calendarWeeks: false,
+                    todayHighlight: true,
+                    autoclose: true,
+                    setDate: new Date(),
+                    maxDate : 0,
+                    format: 'yyyy-mm-dd',
+                    language: "ko",
+                    orientation: "bottom auto",
+                    ignoreReadonly: true
+                });
             }
 
 
@@ -249,6 +392,72 @@
                 overlays =[];
             }
 
+
+            function showModal(latlng, result){
+                $('.layer').hide();
+                $('#addModal').modal('show');
+
+                $('#addModal').on('shown.bs.modal', function () {
+                    $('#title').val('');
+                    if(result[0].road_address === null || typeof result[0].road_address === 'undefined' ) {
+                        $('#roadAddr').val('');
+                    }else {
+                        $('#roadAddr').val(result[0].road_address.address_name);
+                    }
+
+                    $('#addr').val(result[0].address.address_name);
+                    $('#x').val(latlng.getLng());
+                    $('#y').val(latlng.getLat());
+                })
+            }
+
+            function saveStore(){
+
+                var title = $('#title').val();
+                var roadAddr = $('#roadAddr').val();
+                var addr = $('#addr').val();
+                var x =   $('#x').val();
+                var y =   $('#y').val();
+
+                if($.trim(title).length == 0) {
+                    showAlert('상호명을 입력해주세요.');
+                    return false;
+                }
+
+                var param = {
+                     targetDate : $('#timePicker2').val(),
+                     placeName : title,
+                     roadAddr : $('#roadAddr').val(),
+                     addr : $('#addr').val(),
+                     x :   $('#x').val(),
+                     y :   $('#y').val()
+                };
+
+                $.ajax({
+                    url : '/map/addplace',
+                    data: param,
+                    dataType: 'json',
+                }).done(function (data) {
+                    if(data.resultCode == 200) {
+                        $('#addModal').modal('hide');
+                        alert('등록되었습니다.');
+                        search();
+                    }else {
+                        $('#addModal').modal('hide');
+                        alert('등록이 실패하였습니다.');
+                    }
+
+                }).fail(function(data, textStatus, errorThrown){
+                    console.log(textStatus);
+                });
+
+            }
+
+            function showAlert(msg) {
+                $('#moadlAlert').modal('show');
+                $('#alertContent').empty();
+                $('#alertContent').append(msg);
+            }
 
 
             $(document).ready(function (){

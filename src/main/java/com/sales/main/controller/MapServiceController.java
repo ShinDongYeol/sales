@@ -87,4 +87,36 @@ public class MapServiceController {
         return resultMap;
     }
 
+
+
+    @RequestMapping("/map/addplace")
+    @ResponseBody
+    public Map<String, Object> addPlace(HttpServletRequest request,
+                                        PlaceVO svo)  {
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+
+            HttpSession session = request.getSession();
+            Map<String, Object> param = new HashMap<>();
+            //사용자 별 데이터를 가져오기 위해 사용자 정보는 세션에서 꺼내온다.
+            MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+
+            svo.setEmpId(vo.getEmpId());
+            int result = service.insertTodoList(svo);
+
+            if(result > 0) {
+                resultMap.put("resultCode", 200);
+            }else {
+                resultMap.put("resultCode", 500);
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        //ajax 데이터 리턴
+        return resultMap;
+    }
+
 }
