@@ -13,10 +13,10 @@
             <level>DEBUG</level>
         </filter>
         <prudent>false</prudent>
-        <file>${LOGS_ABSOLUTE_PATH}/sales.log</file>
+        <file>${LOGS_ABSOLUTE_PATH}/history_sales.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/sales-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/history_sales-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>10GB</totalSizeCap>
@@ -33,9 +33,9 @@
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
-        <file>${LOGS_ABSOLUTE_PATH}/sales_error.log</file>
+        <file>${LOGS_ABSOLUTE_PATH}/history_sales_error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/sales_error-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+            <fileNamePattern>${LOGS_ABSOLUTE_PATH}/history_sales_error-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>10GB</totalSizeCap>
