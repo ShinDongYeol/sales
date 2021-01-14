@@ -202,7 +202,21 @@
                 });
             });
 
-            //지도에서 등록을 하기 위한 레이어 띄우기
+            //드래그후에는 레이어 삭제
+            kakao.maps.event.addListener(map, 'dragend', function() {
+                if ( $('.layer').css("display") == "block" ) {
+                    $('.layer').hide();
+                }
+            });
+
+            //확대/축소 레이어 삭제
+            kakao.maps.event.addListener(map, 'zoom_changed', function() {
+                if ( $('.layer').css("display") == "block" ) {
+                    $('.layer').hide();
+                }
+            });
+
+                //지도에서 등록을 하기 위한 레이어 띄우기
             function showLayer(mouseEvent, result) {
 
                 //레이어객체 가져오기
