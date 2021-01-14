@@ -7,5 +7,6 @@ public class TeamInfoVO {
     private int rn;
     private String toDate;
     private String teamName;
+    private int cnt;
     private String success;
 }

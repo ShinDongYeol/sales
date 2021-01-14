@@ -116,7 +116,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12 form-group">
-                    <input type="password" placeholder="Password" class="form-control" id="userPw" name="userPw">
+                    <input type="password" placeholder="Password" class="form-control" id="userPw" name="userPw" >
                 </div>
             </div>
             <div class="row">
@@ -155,11 +155,17 @@
     $(document).ready(function () {
         initLoginForm();
         getRSAKeys();
+
+        //엔터 입력 싷행
+        $("#userPw").on('keyup', function(e){
+            if(e.keyCode == 13) {
+                goLogin();
+            }
+        });
     });
 
 
     function initLoginForm(){
-
         $('#userId, #userPw').each(function(){
             $(this).val('');
         });

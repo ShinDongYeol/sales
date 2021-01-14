@@ -24,14 +24,16 @@
         )
         SELECT *
         FROM (
-                 SELECT ROW_NUMBER() over (ORDER BY success DESC ) as rn,
+                 SELECT ROW_NUMBER() over (ORDER BY cnt DESC ) as rn,
                         toDate,
                         team_name as teamName,
+                        cnt,
                         IF(success = 0 , '0.00%', CONCAT(success, '%')) as success
                  FROM (
                           SELECT toDate,
                                  team_name,
-                                 ROUND(if(cnt = 0, 0, cnt / total), 2) as success
+                                 cnt,
+                                 ROUND(if(cnt = 0, 0, (cnt / total)*100), 2) as success
                           FROM t
                       ) a
              )b
