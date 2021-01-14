@@ -15,4 +15,5 @@ public interface MemberMapper {
     int searchMember(Map<String, Object> param) throws Exception;
     int insertMember(MemberVO svo) throws Exception;
     MemberVO getMemberInfo(Map<String, Object> param) throws Exception;
+    int updateMember(Map<String, Object> param) throws Exception;
 }

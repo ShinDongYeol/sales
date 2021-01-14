@@ -31,4 +31,8 @@ public class MyInfoService {
     public MemberVO getMemberInfo(Map<String, Object> param) throws Exception {
         return memMapper.getMemberInfo(param);
     }
+
+    public int updateMember(Map<String, Object> param) throws Exception {
+        return memMapper.updateMember(param);
+    }
 }

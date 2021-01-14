@@ -40,4 +40,17 @@
                  values(#{empId}, #{empPw}, #{empName}, #{phone}, #{team}, #{position})
     </insert>
 
+    <update id="updateMember"  parameterType="java.util.Map">
+
+        UPDATE sales_employee
+        <set>
+            mod_date = now()
+            <if test="empPw != null and  empPw neq ''"> , emp_pw = #{empPw} </if>
+            <if test="teamCode != null and  teamCode neq ''"> ,team_code = #{teamCode} </if>
+        </set>
+        WHERE emp_id = #{empId}
+
+
+    </update>
+
 </mapper>

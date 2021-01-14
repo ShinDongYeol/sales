@@ -29,7 +29,7 @@
           box-sizing: border-box;
         }
         
-        button {
+       #modifyFrm >  button {
           width: 50%;
           color: white;
           padding: 14px 20px;
@@ -39,8 +39,29 @@
           cursor: pointer;
           float: left;
         }
-        
-        
+
+
+        .modal-body.alert {
+            padding: 20px;
+            overflow: hidden;
+            height: 50px;
+        }
+
+        .modal-footer {
+            padding: 0;
+            height: 60px;
+        }
+
+        .modal-footer button {
+
+            margin-top: 10px;
+            height: 50px;
+        }
+
+        .modal-search {
+            padding: 20px;
+        }
+
         div {
           overflow: hidden;
           border-radius: 5px;
@@ -66,6 +87,7 @@
         .form-control.is-invalid {
             border-color: #dc3545;
             padding-right: calc(1.5em + .75rem);
+            background-image: url("/images/input_error.png");
             background-repeat: no-repeat;
             background-position: right calc(.375em + .1875rem) center;
             background-size: calc(.75em + .375rem) calc(.75em + .375rem);
@@ -76,59 +98,78 @@
 
 </head>
 <body>
-  <div>
-    <h2 style="text-align: center; font-size: x-large;"><strong>정보 수정</strong></h2>
+<section>
+    <div>
+        <h2 style="text-align: center; font-size: x-large;"><strong>정보 수정</strong></h2>
+        <form action="" method="post" id="modifyFrm" onsubmit="return false;" class="col-sm-10 col-ms-8 col-lg-6">
+            <input type="hidden" id="empId" name="empId" th:value="${mem.getEmpId()}">
+            <div>
+                <label style="font-weight: bold;font-size: 15px">* 사번</label>
+                <br/>
+                <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpId()}"></span>
+            </div>
+            <div>
+                <label style="font-weight: bold;font-size: 15px">* 이름</label>
+                <br/>
+                <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpName()}"></span>
+            </div>
 
-    <form action="/myinfo/modify" method="post" id="modifyFrm" class="col-sm-10 col-ms-8 col-lg-6">
-        <div>
-            <label style="font-weight: bold;font-size: 15px">* 사번</label>
-            <br/>
-            <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpId()}"></span>
-        </div>
-        <div>
-            <label style="font-weight: bold;font-size: 15px">* 이름</label>
-            <br/>
-            <span style="font-weight: bold;font-size: 13px;padding-left: 15px" th:text="${mem.getEmpName()}"></span>
-        </div>
+            <div class="form-group">
+                <label>* 비밀번호</label>
+                <input type="password" class="form-control" id="empPw" name="empPw">
+            </div>
 
-        <div class="form-group">
-            <label>* 비밀번호</label>
-            <input type="password" class="form-control" id="empPw" name="empPw">
-        </div>
+            <div class="form-group">
+                <label>* 비밀번호 확인</label>
+                <input type="password"  class="form-control" id="confirmPw" name="confirmPw">
+            </div>
 
-        <div class="form-group">
-            <label>* 비밀번호 확인</label>
-            <input type="password"  class="form-control" id="confirmPw" name="confirmPw">
-        </div>
+            <div>
+                <label for="teamCode">*팀</label>
+                <select name="teamCode" id="teamCode" class="form-control">
+                    <option th:each="team : ${teamList}" th:value="${team.teamCode}" th:text="${team.teamName}" th:selected="${mem.getTeamCode() == team.teamCode}"></option>
+                </select>
+            </div>
 
-        <div>    
-            <label for="team">*팀</label>
-            <select name="team" id="team" class="form-control">
-                <option th:each="team : ${teamList}" th:value="${team.teamCode}" th:text="${team.teamName}" th:selected="${mem.getTeamCode() == team.teamCode}"></option>
-            </select>
-        </div>
-
-        <button type="button" class="btn btn-primary" onclick="modifyUser();">수정</button>
-        <button type="button" class="btn btn-default" onclick="location.href='/view/myinfo'">취소</button>
-
-
-    </form>
-</div>
+            <button type="button" class="btn btn-primary" onclick="modifyUser();">수정</button>
+            <button type="button" class="btn btn-danger" onclick="location.href='/view/myinfo'">취소</button>
+        </form>
+    </div>
+</section>
+  <section>
+      <div class="modal fade" id="moadlAlert" role="dialog">
+          <div class="modal-dialog modal-dialog-centered modal-sm" >
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h4>Alert</h4>
+                  </div>
+                  <div class="modal-body alert" id="modalContent">
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
 </body>
-<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
-<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
-<script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-datepicker-theme.css}" />
+<script type="text/javascript" th:src="@{/js/moment/moment.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-datepicker.js}"></script>
+<script type="text/javascript" th:src="@{/js/bootstrap-datepicker.ko.js}"></script>
 <script>
 
     function validPw() {
         var pw = $('#empPw').val();
         var confirmPw = $('#confirmPw').val();
 
-        if(pw != confirmPw) {
-            showAlert('비밀번호가 일치하지 않습니다.');
-            $('#confirmPw').focus();
-            return false;
+        if($.trim(pw).length  > 0) {
+            if (pw != confirmPw) {
+                showAlert('비밀번호가 일치하지 않습니다.');
+                $('#confirmPw').focus();
+                return false;
+            }
         }
         return true;
     }
@@ -178,13 +219,43 @@
 
     function modifyUser() {
         if( validPw()) {
-            $('#modifyFrm').submit();
+
+            var param = {
+                empId : $('#empId').val(),
+                empPw : $('#empPw').val(),
+                teamCode : $('#teamCode').val()
+            }
+
+            $.ajax({
+                url : '/myinfo/modify',
+                data: param,
+                dataType: 'json',
+            }).done(function (data) {
+                if(data.resultCode == 200) {
+                    showAlert('수정되었습니다.');
+                }else {
+                    showAlert('수정이 실패하였습니다.');
+                }
+            }).fail(function(data, textStatus, errorThrown){
+                console.log(textStatus);
+            });
+
         }
 
     }
 
+
+    function showAlert(msg) {
+        $('#moadlAlert').modal('show');
+        $('#modalContent').empty();
+        $('#modalContent').append(msg);
+    }
+
+
     (function(){
-        validation();
+        $("#moadlAlert").on('hide.bs.modal', function(){
+           location.href ="/view/myinfo";
+        });
     })();
 
 

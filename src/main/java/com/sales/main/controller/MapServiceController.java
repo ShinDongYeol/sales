@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 지도관련 컨트롤러
+ */
 @Controller
 public class MapServiceController {
 
@@ -28,6 +31,11 @@ public class MapServiceController {
         this.service = service;
     }
 
+    /**
+     * 지도 화면 출력
+     * @param request
+     * @return
+     */
     @RequestMapping("/view/map")
     public ModelAndView mapView(HttpServletRequest request) {
         ModelAndView view = new ModelAndView();
@@ -46,6 +54,12 @@ public class MapServiceController {
     }
 
 
+    /**
+     * 지도에 뿌릴 데이터
+     * @param request
+     * @param toDate
+     * @return
+     */
     @RequestMapping("/map/getData")
     @ResponseBody
     public Map<String, Object> getData(HttpServletRequest request,
@@ -58,18 +72,18 @@ public class MapServiceController {
             HttpSession session = request.getSession();
 
             Map<String, Object> param = new HashMap<>();
-
+            //사용자 별 데이터를 가져오기 위해 사용자 정보는 세션에서 꺼내온다.
             MemberVO vo = (MemberVO)session.getAttribute("userInfo");
             param.put("empId", vo.getEmpId());
             param.put("toDate", toDate);
-
+            // 사용자 , 일자별 데이터 가져오기
             List<PlaceVO> workList = service.selectTodoList(param);
-
-
+            //리턴 객체에 담기
             resultMap.put("workList", workList);
         }catch (Exception e) {
             e.printStackTrace();
         }
+        //ajax 데이터 리턴
         return resultMap;
     }
 

@@ -7,7 +7,10 @@ import com.sales.main.vo.member.MemberVO;
 import com.sales.main.vo.member.TeamVO;
 import com.sales.main.vo.myinfo.MyWorkInfoVO;
 import com.sales.main.vo.place.PlaceVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +30,10 @@ public class MyInfoController {
     @Autowired
     private MyInfoService service;
 
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    private Logger logger = LoggerFactory.getLogger(MyInfoController.class);
 
     @RequestMapping("/view/myinfo")
     public ModelAndView myinfoView(HttpServletRequest request) {
@@ -36,7 +43,6 @@ public class MyInfoController {
 
             HttpSession session = request.getSession();
             MemberVO vo = (MemberVO)session.getAttribute("userInfo");
-
             String nowDate = DateUtils.getNowTimeToString("yyyy-MM-dd");
             view.addObject("nowDate", nowDate);
             view.addObject("mem", vo);
@@ -45,7 +51,6 @@ public class MyInfoController {
         }catch (Exception e) {
             e.printStackTrace();
         }
-
         return view;
     }
 
@@ -100,6 +105,55 @@ public class MyInfoController {
             e.printStackTrace();
         }
         return resultMap;
+    }
+
+
+    @RequestMapping("/myinfo/modify")
+    @ResponseBody
+    public Map<String, Object> modifyMyinfo(  HttpServletRequest request,
+                                                @RequestParam(value = "empId") String empId,
+                                                 @RequestParam(value = "empPw") String empPw,
+                                                @RequestParam(value = "teamCode") String teamCode){
+
+
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try{
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("empId", empId);
+            param.put("teamCode", teamCode);
+            if(empPw !=null && empPw.length() > 0) {
+                param.put("empPw", passwordEncoder.encode(empPw));
+            }
+            int result = service.updateMember(param);
+
+            if(result > 0) {
+                resultMap.put("resultCode", 200);
+
+                HttpSession session = request.getSession();
+                MemberVO vo = (MemberVO)session.getAttribute("userInfo");
+
+
+                //팀정보 갱신
+                MemberVO newVO = service.getMemberInfo(param);
+                vo.setTeamCode(teamCode);
+                vo.setTeam(newVO.getTeam());
+
+                session.removeAttribute("userInfo");
+                session.setAttribute("userInfo", vo);
+
+            }else {
+                resultMap.put("resultCode", 500);
+            }
+
+        }catch (Exception e) {
+            logger.error("error", e);
+            resultMap.put("resultCode", 500);
+        }
+
+        return resultMap;
+
     }
 
 }
