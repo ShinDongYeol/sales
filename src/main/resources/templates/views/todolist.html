@@ -27,6 +27,10 @@
             text-align: center;
             font-size: small;
         }
+        
+        td {
+            padding: 2px;
+        }
 
         .navbar-nav :hover {
             background-color: black;
@@ -96,8 +100,8 @@
 
             </div>
             <div class="right">
-                <button type="button" class="btn btn-default btn-sm btnAdd" onclick="tableAdd()">추가</button>
-                <button type="button" class="btn btn-default btn-sm btnAdd" onclick="deleteTr()">삭제</button>
+                <button type="button" class="btn btn-default btn-sm btnAdd" onclick="tableAdd()"><span class="glyphicon glyphicon-plus"></span></button>
+                <button type="button" class="btn btn-default btn-sm btnAdd" onclick="deleteTr()"><span class="glyphicon glyphicon-minus"></span></button>
             </div>
         </div>
         <table class="todoTable" id="todoTable">
