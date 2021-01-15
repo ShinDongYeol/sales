@@ -24,6 +24,7 @@
             width: 100%;
             border-collapse: collapse;
             width: 100%;
+            font-size:0.9em;
         }
 
         td, th {
@@ -39,6 +40,7 @@
         .infoForm {
             width: 100%;
             overflow: hidden;
+            font-size:1em;
         }
 
         .infoForm .left {
@@ -80,9 +82,9 @@
             <h2><strong>My Info</strong></h2>
             <div class="infoForm">
                 <div class="left">
-                    <p><span style="font-weight: bold;font-size: 15px">이름 : </span> <span th:text="${mem.getEmpName()}"></span> </p>
-                    <p><span style="font-weight: bold;font-size: 15px">직급 : </span> <span th:text="${mem.getPosition()}"></span> </p>
-                    <p><span style="font-weight: bold;font-size: 15px">&nbsp;&nbsp;&nbsp;팀 : </span><span th:text="${mem.getTeam()}"></span> </p>
+                    <p><span style="font-weight: bold;font-size: 1em">이름 : </span> <span th:text="${mem.getEmpName()}"></span> </p>
+                    <p><span style="font-weight: bold;font-size: 1em">직급 : </span> <span th:text="${mem.getPosition()}"></span> </p>
+                    <p><span style="font-weight: bold;font-size: 1em">&nbsp;&nbsp;&nbsp;팀 : </span><span th:text="${mem.getTeam()}"></span> </p>
                 </div>
                 <button type="button" class="btn btn-primary btn-sm" onclick="location.href='/view/modifyInfo'">정보 수정</button>
             </div>
